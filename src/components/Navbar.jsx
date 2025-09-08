@@ -1,26 +1,46 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
+import logo_dragon from "../assets/logo_dragon.png";
+import logo_name from "../assets/logo_name.png";
 
 const Navbar = () => {
-  return (
-    <nav className="bg-black p-9 shadow-[0_2px_12px_#c50400] font-share sticky">
-      <div className="mx-auto flex justify-between items-center">
+  const [shrink, setShrink] = useState(false);
 
-        {/* Logo container */}
-        <div className="flex items-center space-x-3">
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setShrink(true);
+      } else {
+        setShrink(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <nav
+      className={`bg-black shadow-[0_2px_12px_#c50400] font-share sticky top-0 z-100 transition-all duration-300 ease-in-out
+        ${shrink ? "p-4" : "p-9"}`}
+    >
+      <div className="mx-auto flex justify-between items-center">
+        <div className="flex items-center space-x-3 transition-all duration-300">
           <img
-            src="src/assets/logo_dragon.png"
+            src={logo_dragon}
             alt="Dragon Logo"
-            className="h-16 w-auto"
+            className={`w-auto transition-all duration-300 ${shrink ? "h-12" : "h-16"}`}
           />
           <img
-            src="src/assets/logo_name.png"
+            src={logo_name}
             alt="Name Logo"
-            className="h-9 w-auto"
+            className={`w-auto transition-all duration-300 ${shrink ? "h-7" : "h-9"}`}
           />
         </div>
 
-        {/* Nav Links */}
-        <div className="flex space-x-9 text-2xl text-bloodred-500">
+        <div
+          className={`flex space-x-9 text-bloodred-500 transition-all duration-300 ${shrink ? "text-xl" : "text-2xl"
+            }`}
+        >
           <a href="#" className="hover:underline underline-offset-8">/home</a>
           <a href="#" className="hover:underline underline-offset-8">/man</a>
           <a href="#" className="hover:underline underline-offset-8">/passwd</a>
@@ -28,7 +48,7 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

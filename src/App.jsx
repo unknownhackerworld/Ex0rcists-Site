@@ -9,7 +9,7 @@ function App() {
 
   return (
     <>
-      <div className='bg-[#010101] min-h-screen w-full bg-grid'>
+      <div className='bg-[#010101] min-h-screen w-full bg-grid bg-fixed'>
       <Navbar/>
       <Home />
       <About />

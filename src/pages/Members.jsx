@@ -1,6 +1,5 @@
 // src/pages/Members.jsx
 import React, { useState, useEffect, useRef } from "react";
-import { categories } from "../components/categories";
 import karthikImg from "../assets/members/karthik.jpeg";  
 import shyamImg from "../assets/members/shyam.jpeg"; 
 import praveenImg from "../assets/members/praveen.jpeg";
@@ -118,6 +117,17 @@ const Members = () => {
 
 
   ];
+
+
+  const categories = [
+    { id: "all", label: "All" },
+    { id: "web", label: "Web Exploitation" },
+    { id: "osint", label: "OSINT" },
+    { id: "re", label: "Reverse Engineering" },
+    { id: "pwn", label: "Pwn" },
+    { id: "steg", label: "Steganography" },
+    { id: "forensics", label: "Forensics" },
+  ]
 
   const [activeMemberIndex, setActiveMemberIndex] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -247,7 +257,7 @@ const Members = () => {
 
       <div className="flex md:flex-row flex-col w-full text-white px-8 py-4 gap-8 font-share">
         {/* Categories Sidebar with backbone+branch */}
-        <aside className="hidden md:block flex-shrink-0 rounded-xl bg-[rgba(44,44,44,0.44)] p-6 sticky top-10 self-start">
+        <aside className="hidden md:block flex-shrink-0 rounded-xl bg-[rgba(44,44,44,0.44)] p-6 sticky top-24 self-start">
           {/* Vertical backbone line */}
           <div className="absolute left-10 top-6 bottom-6 w-[1px] bg-[#950C09]" />
 

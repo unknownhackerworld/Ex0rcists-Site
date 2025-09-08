@@ -21,24 +21,110 @@ The group pushes boundaries, cracks puzzles, and treats hacking as both an art a
 Their motto: The Ritual Begins At Root Access.`,
 
     "cat passwd": {
-      members: [
-        {
-          name: "Karthik",
-          username: "K4RTH1K",
-          linkedin: "https://linkedin.com/in/karthik",
-          picture: "src/assets/members/karthik.jpg",
-          notes:
-            "A notorious hacker who can solve almost any challenge with extraordinary talent.",
-        },
-        {
-          name: "Shyamalavannan G",
-          username: "Shyam",
-          linkedin: "https://linkedin.com/in/shyamalavannan",
-          picture: "src/assets/members/shyam.jpg",
-          notes:
-            "The second pillar of Ex0rcists, a strategist with precision and calm under pressure.",
-        },
-      ],
+      members : [
+          {
+            name: "Karthik",
+            username: "K4RTH1K",
+            linkedin: "https://linkedin.com/in/karthik",
+            
+            notes:
+              "A notorious hacker who can solve almost any challenge with extraordinary talent.",
+            fields: ["Web Exploitation", "Forensics"],
+            tagline: "Root or nothing.",
+          },
+          {
+            name: "Shyamalavannan G",
+            username: "Shyam",
+            linkedin: "https://linkedin.com/in/shyamalavannan",
+            
+            notes:
+              "The second pillar of Ex0rcists, a strategist with precision and calm under pressure.",
+            fields: ["OSINT", "Reverse Engineering"],
+            tagline: "Silent, precise.",
+          },
+          {
+            name: "Praveen S",
+            username: "Praveen",
+            linkedin: "https://linkedin.com/in/praveens",
+            
+            notes: "Expert in deep system analysis and breaking binaries.",
+            fields: ["Reverse Engineering", "Steganography"],
+            tagline: "Reverse engineer by trade.",
+          },
+          {
+            name: "Janish Andrin",
+            username: "Janish",
+            linkedin: "https://linkedin.com/in/janish",
+            
+            notes: "The offensive powerhouse, master of exploitation.",
+            fields: ["Pwn", "Web Exploitation"],
+            tagline: "Exploit first, ask later.",
+          },
+          {
+            name: "Shakthi Vikranth",
+            username: "Shaz",
+            linkedin: "https://linkedin.com/in/shaz",
+            
+            notes: "Master at uncovering digital trails and hidden evidence.",
+            fields: ["Forensics"],
+            tagline: "Trace it, prove it.",
+          },
+          {
+            name: "Mr Robot",
+            username: "fsociety",
+            linkedin: "https://linkedin.com/in/shaz",
+            
+            notes: "Master at uncovering digital trails and hidden evidence.",
+            fields: ["Reverse Engineering"],
+            tagline: "Trace it, prove it.",
+          },
+          {
+            name: "Mr Robot",
+            username: "fsociety",
+            linkedin: "https://linkedin.com/in/shaz",
+            
+            notes: "Master at uncovering digital trails and hidden evidence.",
+            fields: ["OSINT"],
+            tagline: "Trace it, prove it.",
+          },
+          {
+            name: "Mr Robot",
+            username: "fsociety",
+            linkedin: "https://linkedin.com/in/shaz",
+            
+            notes: "Master at uncovering digital trails and hidden evidence.",
+            fields: ["Pwn"],
+            tagline: "Trace it, prove it.",
+          },
+          {
+            name: "Mr Robot",
+            username: "fsociety",
+            linkedin: "https://linkedin.com/in/shaz",
+            
+            notes: "Master at uncovering digital trails and hidden evidence.",
+            fields: ["Steganography"],
+            tagline: "Trace it, prove it.",
+          },
+          {
+            name: "Mr Robot",
+            username: "fsociety",
+            linkedin: "https://linkedin.com/in/shaz",
+            
+            notes: "Master at uncovering digital trails and hidden evidence.",
+            fields: ["Web Exploitation"],
+            tagline: "Trace it, prove it.",
+          }, {
+            name: "Mr Robot",
+            username: "fsociety",
+            linkedin: "https://linkedin.com/in/shaz",
+            
+            notes: "Master at uncovering digital trails and hidden evidence.",
+            fields: ["Reverse Engineering"],
+            tagline: "Trace it, prove it.",
+          },
+      
+      
+        ]
     },
 
     "cat logs": `Check the writeups below. Every exploit leaves a trace...`,
@@ -54,9 +140,13 @@ Their motto: The Ritual Begins At Root Access.`,
   ];
 
   useEffect(() => {
-    terminalEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const terminal = document.getElementById("terminal");
+    if (terminal) {
+      terminal.scrollTop = terminal.scrollHeight;
+    }
     inputRef.current?.focus();
   }, [history, typing]);
+
 
   const getRoast = () =>
     roasts[Math.floor(Math.random() * roasts.length)];
@@ -181,10 +271,13 @@ Their motto: The Ritual Begins At Root Access.`,
       </div>
 
       {/* Right Terminal */}
-      <div
-        id="terminal"
-        className="flex-1 max-w-[47rem] h-[29.875rem] rounded-[2.25rem] border border-[#730000] bg-black text-white p-10 mt-10 font-kode text-[1.25rem] leading-normal overflow-y-auto scrollbar-hide"
-      >
+        <div
+          id="terminal"
+          className="flex-1 max-w-[47rem] h-112 rounded-4xl border border-[#730000] 
+             bg-black text-white p-10 mt-10 font-kode text-[1.25rem] leading-normal 
+             overflow-y-auto scrollbar-hide"
+        >
+
         {history.map((item, index) => (
           <div key={index} className="mb-2">
             <span>
