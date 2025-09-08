@@ -277,65 +277,70 @@ Their motto: The Ritual Begins At Root Access.`,
 
   return (
     <>
-    <div className="flex flex-col md:flex-row w-full items-center justify-center  px-8">
-      <div className="flex-1 flex justify-center items-center">
-        <img
-          src={logo}
-          alt="Ex0rcists Logo"
-          className="absolute max-h-120 object-contain saturate-150 drop-shadow-2xl
-    brightness-150 hover:scale-105 transition-transform duration-300 z-10"
-          id="logo_home_1"
-        />
-        <img
-          src={logo}
-          alt="Ex0rcists Logo"
-          className="absolute max-h-120 object-contain saturate-150 drop-shadow-2xl
-    brightness-150 blur-[7px] z-0 transition-transform duration-300"
-          id="logo_home_2"
-        />
-      </div>
+      <div className="flex flex-col md:flex-row w-full items-center justify-center px-4 md:px-6 lg:px-8 mt-10">
+        {/* Logo Section */}
+        <div className="flex-1 flex justify-center items-center relative w-full max-w-sm md:max-w-md lg:max-w-lg">
+          <img
+            src={logo}
+            alt="Ex0rcists Logo"
+            className="max-h-60 md:max-h-80 lg:max-h-120 object-contain saturate-150 drop-shadow-2xl
+            brightness-150 hover:scale-105 transition-transform duration-300 z-10"
+            id="logo_home_1"
+          />
+          <img
+            src={logo}
+            alt="Ex0rcists Logo"
+            className="absolute max-h-60 md:max-h-80 lg:max-h-120 object-contain saturate-150 drop-shadow-2xl
+            brightness-150 blur-[7px] z-0 transition-transform duration-300"
+            id="logo_home_2"
+          />
+        </div>
 
-      <div
-        id="terminal"
-        className="flex-1 max-w-[47rem] h-112 rounded-4xl border border-[#730000] bg-black text-white p-10 mt-10 font-kode text-[1.25rem] leading-normal overflow-y-auto scrollbar-hide"
-      >
-        {history.map((item, index) => (
-          <div key={index} className="mb-2">
+        {/* Terminal Section */}
+        <div
+          id="terminal"
+          className="flex-1 md:flex-[1.3] max-w-full md:max-w-[50rem] md:h-112 rounded-2xl border border-[#730000] 
+          bg-black text-white p-6 md:p-8 mt-8 md:mt-10 ml-0 md:ml-8 mr-0 md:mr-4 font-kode text-base md:text-xl 
+          leading-normal overflow-y-auto scrollbar-hide"
+        >
+          {history.map((item, index) => (
+            <div key={index} className="mb-4">
+              <span>
+                ┌──(
+                <span className="text-[#C50400]">uh4ck3r</span>㉿
+                <span className="text-[#009D15]">Ex0rcists</span>)-[~]
+              </span>
+              <br />
+              <span>└─$ {item.command}</span>
+              <pre className="mt-1 whitespace-pre-wrap">{item.output}</pre>
+            </div>
+          ))}
+
+          {/* Current Input */}
+          <div>
             <span>
               ┌──(
               <span className="text-[#C50400]">uh4ck3r</span>㉿
               <span className="text-[#009D15]">Ex0rcists</span>)-[~]
             </span>
             <br />
-            <span>└─$ {item.command}</span>
-            <pre className="mt-1 whitespace-pre-wrap">{item.output}</pre>
+            <span>└─$ </span>
+            <input
+              ref={inputRef}
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              disabled={typing}
+              className="bg-transparent outline-none font-kode w-[90%] sm:w-auto"
+            />
           </div>
-        ))}
-
-        {/* Current input */}
-        <div>
-          <span>
-            ┌──(
-            <span className="text-[#C50400]">uh4ck3r</span>㉿
-            <span className="text-[#009D15]">Ex0rcists</span>)-[~]
-          </span>
-          <br />
-          <span>└─$ </span>
-          <input
-            ref={inputRef}
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            disabled={typing}
-            className="bg-transparent outline-none font-kode"
-          />
-
+          <div ref={terminalEndRef} />
         </div>
-        <div ref={terminalEndRef} />
       </div>
-    </div>
-      <hr className="w-[75rem] max-w-full h-[0.125rem] mx-auto my-20 bg-bloodred-500" />
+
+      {/* Divider */}
+      <hr className="w-full md:w-[75rem] h-[0.125rem] mx-auto my-12 md:my-20 bg-bloodred-500" />
     </>
   );
 };
