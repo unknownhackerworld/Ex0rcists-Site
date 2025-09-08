@@ -11,22 +11,25 @@
   background-image: 
     linear-gradient(to right, rgba(255, 0, 0, 0.15) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 0, 0, 0.15) 1px, transparent 1px);
-  background-size: 40px 40px; /* size of grid squares */
+  background-size: 40px 40px; 
 }
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 .no-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
 }
 
 
-#logo_home{
-  mix-blend-mode: difference;
-}
+
 
 ::-webkit-scrollbar{
   width: 0px;
+}
+
+
+html {
+  scroll-behavior: smooth;
 }

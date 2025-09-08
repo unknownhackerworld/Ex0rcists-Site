@@ -1,4 +1,3 @@
-// src/pages/Members.jsx
 import React, { useState, useEffect, useRef } from "react";
 import karthikImg from "../assets/members/karthik.jpeg";  
 import shyamImg from "../assets/members/shyam.jpeg"; 
@@ -179,7 +178,6 @@ const Members = () => {
 
   return (
     <>
-      {/* glitch + modal animations injected here */}
       <style>{`
         .glitch-overlay {
           position: fixed;
@@ -256,9 +254,7 @@ const Members = () => {
       </div>
 
       <div className="flex md:flex-row flex-col w-full text-white px-8 py-4 gap-8 font-share">
-        {/* Categories Sidebar with backbone+branch */}
         <aside className="hidden md:block flex-shrink-0 rounded-xl bg-[rgba(44,44,44,0.44)] p-6 sticky top-24 self-start">
-          {/* Vertical backbone line */}
           <div className="absolute left-10 top-6 bottom-6 w-[1px] bg-[#950C09]" />
 
           <ul className="space-y-8">

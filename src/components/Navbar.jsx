@@ -28,12 +28,14 @@ const Navbar = () => {
           <img
             src={logo_dragon}
             alt="Dragon Logo"
-            className={`w-auto transition-all duration-300 ${shrink ? "h-12" : "h-16"}`}
+            className={`w-auto transition-all duration-300 saturate-150 drop-shadow-2xl
+            brightness-150 ${shrink ? "h-12" : "h-16"}`}
           />
           <img
             src={logo_name}
             alt="Name Logo"
-            className={`w-auto transition-all duration-300 ${shrink ? "h-7" : "h-9"}`}
+            className={`w-auto transition-all duration-300 saturate-150 drop-shadow-2xl
+            brightness-150 ${shrink ? "h-7" : "h-9"}`}
           />
         </div>
 
@@ -41,10 +43,10 @@ const Navbar = () => {
           className={`flex space-x-9 text-bloodred-500 transition-all duration-300 ${shrink ? "text-xl" : "text-2xl"
             }`}
         >
-          <a href="#" className="hover:underline underline-offset-8">/home</a>
-          <a href="#" className="hover:underline underline-offset-8">/man</a>
-          <a href="#" className="hover:underline underline-offset-8">/passwd</a>
-          <a href="#" className="hover:underline underline-offset-8">/log</a>
+          <a href="#home" className="hover:underline underline-offset-8">/home</a>
+          <a href="#about" className="hover:underline underline-offset-8">/man</a>
+          <a href="#members" className="hover:underline underline-offset-8">/passwd</a>
+          <a href="#writeups" className="hover:underline underline-offset-8">/log</a>
         </div>
       </div>
     </nav>

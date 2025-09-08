@@ -278,7 +278,6 @@ Their motto: The Ritual Begins At Root Access.`,
   return (
     <>
       <div className="flex flex-col md:flex-row w-full items-center justify-center px-4 md:px-6 lg:px-8 mt-10">
-        {/* Logo Section */}
         <div className="flex-1 flex justify-center items-center relative w-full max-w-sm md:max-w-md lg:max-w-lg">
           <img
             src={logo}
@@ -296,7 +295,6 @@ Their motto: The Ritual Begins At Root Access.`,
           />
         </div>
 
-        {/* Terminal Section */}
         <div
           id="terminal"
           className="flex-1 md:flex-[1.3] max-w-full md:max-w-[50rem] md:h-112 rounded-2xl border border-[#730000] 
@@ -316,7 +314,6 @@ Their motto: The Ritual Begins At Root Access.`,
             </div>
           ))}
 
-          {/* Current Input */}
           <div>
             <span>
               ┌──(
@@ -339,7 +336,6 @@ Their motto: The Ritual Begins At Root Access.`,
         </div>
       </div>
 
-      {/* Divider */}
       <hr className="w-full md:w-[75rem] h-[0.125rem] mx-auto my-12 md:my-20 bg-bloodred-500" />
     </>
   );
