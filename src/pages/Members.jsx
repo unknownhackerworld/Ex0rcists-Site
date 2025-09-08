@@ -16,7 +16,7 @@ const Members = () => {
     {
       name: "Karthik",
       username: "K4RTH1K",
-      linkedin: "https://linkedin.com/in/karthik",
+      linkedin: "https://www.linkedin.com/in/karthik-d-1514b4258/",
       picture: karthikImg,
       notes:
         "A notorious hacker who can solve almost any challenge with extraordinary talent.",
@@ -26,7 +26,7 @@ const Members = () => {
     {
       name: "Shyamalavannan G",
       username: "Shyam",
-      linkedin: "https://linkedin.com/in/shyamalavannan",
+      linkedin: "https://www.linkedin.com/in/shyam9876/",
       picture: shyamImg,
       notes:
         "The second pillar of Ex0rcists, a strategist with precision and calm under pressure.",
@@ -36,7 +36,7 @@ const Members = () => {
     {
       name: "Praveen S",
       username: "Praveen",
-      linkedin: "https://linkedin.com/in/praveens",
+      linkedin: "https://www.linkedin.com/in/praveen-s-052920222/",
       picture: praveenImg,
       notes: "Expert in deep system analysis and breaking binaries.",
       fields: ["Reverse Engineering", "Steganography"],
@@ -45,7 +45,7 @@ const Members = () => {
     {
       name: "Janish Andrin",
       username: "Janish",
-      linkedin: "https://linkedin.com/in/janish",
+      linkedin: "https://www.linkedin.com/in/janish-andrin/",
       picture: janishImg,
       notes: "The offensive powerhouse, master of exploitation.",
       fields: ["Pwn", "Web Exploitation"],
@@ -54,7 +54,7 @@ const Members = () => {
     {
       name: "Shakthi Vikranth",
       username: "Shaz",
-      linkedin: "https://linkedin.com/in/shaz",
+      linkedin: "https://www.linkedin.com/in/shakthi-vikranth/",
       picture: shazImg,
       notes: "Master at uncovering digital trails and hidden evidence.",
       fields: ["Forensics"],

@@ -48,12 +48,12 @@ The group pushes boundaries, cracks puzzles, and treats hacking as both an art a
 Their motto: The Ritual Begins At Root Access.`,
 
     "cat passwd": {
-      members : [
+      members :[
           {
             name: "Karthik",
             username: "K4RTH1K",
-            linkedin: "https://linkedin.com/in/karthik",
-            
+            linkedin: "https://www.linkedin.com/in/karthik-d-1514b4258/",
+            picture: karthikImg,
             notes:
               "A notorious hacker who can solve almost any challenge with extraordinary talent.",
             fields: ["Web Exploitation", "Forensics"],
@@ -62,8 +62,8 @@ Their motto: The Ritual Begins At Root Access.`,
           {
             name: "Shyamalavannan G",
             username: "Shyam",
-            linkedin: "https://linkedin.com/in/shyamalavannan",
-            
+            linkedin: "https://www.linkedin.com/in/shyam9876/",
+            picture: shyamImg,
             notes:
               "The second pillar of Ex0rcists, a strategist with precision and calm under pressure.",
             fields: ["OSINT", "Reverse Engineering"],
@@ -72,8 +72,8 @@ Their motto: The Ritual Begins At Root Access.`,
           {
             name: "Praveen S",
             username: "Praveen",
-            linkedin: "https://linkedin.com/in/praveens",
-            
+            linkedin: "https://www.linkedin.com/in/praveen-s-052920222/",
+            picture: praveenImg,
             notes: "Expert in deep system analysis and breaking binaries.",
             fields: ["Reverse Engineering", "Steganography"],
             tagline: "Reverse engineer by trade.",
@@ -81,8 +81,8 @@ Their motto: The Ritual Begins At Root Access.`,
           {
             name: "Janish Andrin",
             username: "Janish",
-            linkedin: "https://linkedin.com/in/janish",
-            
+            linkedin: "https://www.linkedin.com/in/janish-andrin/",
+            picture: janishImg,
             notes: "The offensive powerhouse, master of exploitation.",
             fields: ["Pwn", "Web Exploitation"],
             tagline: "Exploit first, ask later.",
@@ -90,8 +90,8 @@ Their motto: The Ritual Begins At Root Access.`,
           {
             name: "Shakthi Vikranth",
             username: "Shaz",
-            linkedin: "https://linkedin.com/in/shaz",
-            
+            linkedin: "https://www.linkedin.com/in/shakthi-vikranth/",
+            picture: shazImg,
             notes: "Master at uncovering digital trails and hidden evidence.",
             fields: ["Forensics"],
             tagline: "Trace it, prove it.",
@@ -100,7 +100,7 @@ Their motto: The Ritual Begins At Root Access.`,
             name: "Mr Robot",
             username: "fsociety",
             linkedin: "https://linkedin.com/in/shaz",
-            
+            picture: fsocietyImg,
             notes: "Master at uncovering digital trails and hidden evidence.",
             fields: ["Reverse Engineering"],
             tagline: "Trace it, prove it.",
@@ -109,7 +109,7 @@ Their motto: The Ritual Begins At Root Access.`,
             name: "Mr Robot",
             username: "fsociety",
             linkedin: "https://linkedin.com/in/shaz",
-            
+            picture: fsocietyImg,
             notes: "Master at uncovering digital trails and hidden evidence.",
             fields: ["OSINT"],
             tagline: "Trace it, prove it.",
@@ -118,7 +118,7 @@ Their motto: The Ritual Begins At Root Access.`,
             name: "Mr Robot",
             username: "fsociety",
             linkedin: "https://linkedin.com/in/shaz",
-            
+            picture: fsocietyImg,
             notes: "Master at uncovering digital trails and hidden evidence.",
             fields: ["Pwn"],
             tagline: "Trace it, prove it.",
@@ -127,7 +127,7 @@ Their motto: The Ritual Begins At Root Access.`,
             name: "Mr Robot",
             username: "fsociety",
             linkedin: "https://linkedin.com/in/shaz",
-            
+            picture: fsocietyImg,
             notes: "Master at uncovering digital trails and hidden evidence.",
             fields: ["Steganography"],
             tagline: "Trace it, prove it.",
@@ -136,7 +136,7 @@ Their motto: The Ritual Begins At Root Access.`,
             name: "Mr Robot",
             username: "fsociety",
             linkedin: "https://linkedin.com/in/shaz",
-            
+            picture: fsocietyImg,
             notes: "Master at uncovering digital trails and hidden evidence.",
             fields: ["Web Exploitation"],
             tagline: "Trace it, prove it.",
@@ -144,7 +144,7 @@ Their motto: The Ritual Begins At Root Access.`,
             name: "Mr Robot",
             username: "fsociety",
             linkedin: "https://linkedin.com/in/shaz",
-            
+            picture: fsocietyImg,
             notes: "Master at uncovering digital trails and hidden evidence.",
             fields: ["Reverse Engineering"],
             tagline: "Trace it, prove it.",
