@@ -11,6 +11,8 @@ const EditWriteups = ({ currentUser }) => {
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({
     ctfName: "",
+    category: "",
+    challengeName: "",
     author: "",
     tagline: "",
     notes: "",
@@ -20,32 +22,48 @@ const EditWriteups = ({ currentUser }) => {
   useEffect(() => {
     const writeupsRef = ref(database, "writeups");
     const adminsRef = ref(database, "admins");
+
+    // Fetch all writeups in hierarchy CTF → Category → Challenge
     onValue(writeupsRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        const list = Object.keys(data).map((key) => ({
-          id: key,
-          visible: data[key].visible,
-          ...data[key],
-        }));
+        const list = [];
+        // Filter out non-CTF keys
+        const ctfs = Object.keys(data).filter(
+          (key) => key !== "tagline" && key !== "categories"
+        );
+
+        ctfs.forEach((ctfName) => {
+          Object.keys(data[ctfName] || {}).forEach((category) => {
+            Object.keys(data[ctfName][category] || {}).forEach((challenge) => {
+              const item = data[ctfName][category][challenge];
+              list.push({
+                id: `${ctfName}_${category}_${challenge}`,
+                ctfName,
+                category,
+                challengeName: challenge,
+                ...item
+              });
+            });
+          });
+        });
+
         setWriteups(list);
-        console.log("Fetched writeups:", list);
       } else {
         setWriteups([]);
       }
     });
+
+
+
+    // Fetch admins
     onValue(adminsRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        const list = Object.keys(data).map((key) => data[key]);
+        const list = Object.keys(data).map(key => data[key]);
         setAdmins(list);
-        console.log("Fetched admins:", list);
-      } else {
-        setAdmins([]);
-        console.log("No admins found");
-      }
+      } else setAdmins([]);
     });
-
   }, []);
 
   const generateKey = () =>
@@ -53,7 +71,7 @@ const EditWriteups = ({ currentUser }) => {
 
   const handlePaste = (event) => {
     const items =
-      (event.clipboardData || event.originalEvent.clipboardData).items;
+      (event.clipboardData || event.originalEvent.clipboardData)?.items || [];
     for (let item of items) {
       if (item.type.indexOf("image") !== -1) {
         const file = item.getAsFile();
@@ -62,9 +80,9 @@ const EditWriteups = ({ currentUser }) => {
           const base64 = e.target.result;
           const key = generateKey();
           sessionStorage.setItem(key, base64);
-          setFormData((prev) => ({
+          setFormData(prev => ({
             ...prev,
-            content: prev.content + `\n\n![pasted image](session://${key})\n\n`,
+            content: prev.content + `\n\n![pasted image](session://${key})\n\n`
           }));
         };
         reader.readAsDataURL(file);
@@ -81,9 +99,9 @@ const EditWriteups = ({ currentUser }) => {
         const base64 = e.target.result;
         const key = generateKey();
         sessionStorage.setItem(key, base64);
-        setFormData((prev) => ({
+        setFormData(prev => ({
           ...prev,
-          content: prev.content + `\n\n![dropped image](session://${key})\n\n`,
+          content: prev.content + `\n\n![dropped image](session://${key})\n\n`
         }));
       };
       reader.readAsDataURL(file);
@@ -93,20 +111,22 @@ const EditWriteups = ({ currentUser }) => {
   const handleEdit = (item) => {
     setEditingId(item.id);
 
-    let content = item.content;
+    let content = item.content || "";
 
+    // Replace base64 images with session keys
     const imgRegex = /!\[.*?\]\((data:image\/.*?;base64,[^)]+)\)/g;
     let match;
     while ((match = imgRegex.exec(content)) !== null) {
       const base64 = match[1];
       const key = generateKey();
       sessionStorage.setItem(key, base64);
-
       content = content.replace(base64, `session://${key}`);
     }
 
     setFormData({
       ctfName: item.ctfName,
+      category: item.category,
+      challengeName: item.challengeName,
       author: item.author,
       tagline: item.tagline,
       notes: item.notes,
@@ -122,15 +142,16 @@ const EditWriteups = ({ currentUser }) => {
       /!\[.*?\]\(session:\/\/(.*?)\)/g,
       (match, key) => {
         const base64 = sessionStorage.getItem(key);
-        if (base64) {
-          return match.replace(`session://${key}`, base64);
-        }
+        if (base64) return match.replace(`session://${key}`, base64);
         return match;
       }
     );
 
     try {
-      const writeupRef = ref(database, `writeups/${editingId}`);
+      const writeupRef = ref(
+        database,
+        `writeups/${formData.ctfName}/${formData.category}/${formData.challengeName}`
+      );
       await update(writeupRef, {
         ...formData,
         content: finalContent,
@@ -140,6 +161,8 @@ const EditWriteups = ({ currentUser }) => {
       setEditingId(null);
       setFormData({
         ctfName: "",
+        category: "",
+        challengeName: "",
         author: "",
         tagline: "",
         notes: "",
@@ -152,10 +175,14 @@ const EditWriteups = ({ currentUser }) => {
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (item) => {
+    if (!item) return;
     if (window.confirm("Are you sure you want to delete this writeup?")) {
       try {
-        const writeupRef = ref(database, `writeups/${id}`);
+        const writeupRef = ref(
+          database,
+          `writeups/${item.ctfName}/${item.category}/${item.challengeName}`
+        );
         await remove(writeupRef);
         alert("🗑️ Writeup deleted!");
       } catch (error) {
@@ -165,10 +192,13 @@ const EditWriteups = ({ currentUser }) => {
     }
   };
 
-  const handleToggleVisible = async (id, currentVisible) => {
+  const handleToggleVisible = async (item) => {
     try {
-      const writeupRef = ref(database, `writeups/${id}`);
-      await update(writeupRef, { visible: !currentVisible });
+      const writeupRef = ref(
+        database,
+        `writeups/${item.ctfName}/${item.category}/${item.challengeName}`
+      );
+      await update(writeupRef, { visible: !item.visible });
     } catch (error) {
       console.error("Error updating visibility:", error);
       alert("❌ Failed to update visibility.");
@@ -182,19 +212,18 @@ const EditWriteups = ({ currentUser }) => {
       <ul className="mb-6 space-y-3">
         {writeups.length > 0 ? (
           writeups
-            .filter((item) =>
-              Object.values(Admins).includes(currentUser.email)
+            .filter(item =>
+              Admins.includes(currentUser.email)
                 ? true
                 : item.author === currentUser.displayName
             )
-            .map((item) => (
-              <li
-                key={item.id}
-                className="p-4 border border-bloodred-500 rounded-md"
-              >
+            .map(item => (
+              <li key={item.id} className="p-4 border border-bloodred-500 rounded-md">
                 <div className="flex justify-between items-center">
                   <div>
-                    <h2 className="text-xl font-semibold">{item.ctfName}</h2>
+                    <h2 className="text-xl font-semibold">
+                      {item.ctfName} - {item.category} - {item.challengeName}
+                    </h2>
                     <p className="text-gray-400">{item.tagline}</p>
                     <span className="text-sm text-gray-500">By @{item.author}</span>
                   </div>
@@ -204,12 +233,12 @@ const EditWriteups = ({ currentUser }) => {
                       <span className="text-sm text-gray-300">Visible</span>
                       <div
                         className={`relative w-12 h-6 flex items-center rounded-full p-1 transition-colors duration-300 
-      ${item.visible ? "bg-bloodred-500" : "bg-gray-600"}`}
-                        onClick={() => handleToggleVisible(item.id, item.visible ?? true)}
+        ${item.visible ? "bg-bloodred-500" : "bg-gray-600"}`}
+                        onClick={() => handleToggleVisible(item)}
                       >
                         <div
                           className={`w-4 h-4 rounded-full bg-white shadow-md transform transition-transform duration-300 
-        ${item.visible ? "translate-x-6" : "translate-x-0"}`}
+          ${item.visible ? "translate-x-6" : "translate-x-0"}`}
                         />
                       </div>
                     </label>
@@ -222,7 +251,7 @@ const EditWriteups = ({ currentUser }) => {
                     </button>
 
                     <button
-                      onClick={() => handleDelete(item.id)}
+                      onClick={() => handleDelete(item)}
                       className="px-4 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-600 hover:text-white"
                     >
                       Delete
@@ -231,14 +260,17 @@ const EditWriteups = ({ currentUser }) => {
                 </div>
 
                 {editingId === item.id && (
-                  <form onSubmit={handleUpdate} className="grid grid-cols-1 gap-6 text-white mt-6">
-                    {["ctfName", "author", "notes", "tagline"].map((key) => (
+                  <form
+                    onSubmit={handleUpdate}
+                    className="grid grid-cols-1 gap-6 text-white mt-6"
+                  >
+                    {["ctfName", "category", "challengeName", "author", "notes", "tagline"].map(key => (
                       <div key={key} className="relative group">
                         <input
                           type="text"
-                          value={formData[key]}
+                          value={formData[key] || ""}
                           onChange={(e) =>
-                            setFormData((prev) => ({ ...prev, [key]: e.target.value }))
+                            setFormData(prev => ({ ...prev, [key]: e.target.value }))
                           }
                           className="peer p-3 w-full rounded-md bg-black text-white focus:outline-none gradient-border"
                           placeholder=" "
@@ -249,13 +281,7 @@ const EditWriteups = ({ currentUser }) => {
 peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-500 peer-placeholder-shown:text-base
 peer-focus:top-[-8px] peer-focus:text-sm peer-focus:text-bloodred-500 peer-valid:top-[-8px] peer-valid:text-sm peer-valid:text-bloodred-500 bg-black px-1"
                         >
-                          {key === "ctfName"
-                            ? "CTF Name"
-                            : key === "author"
-                              ? "Author"
-                              : key === "notes"
-                                ? "Notes"
-                                : "Tagline"}
+                          {key.charAt(0).toUpperCase() + key.slice(1)}
                         </label>
                       </div>
                     ))}
@@ -269,8 +295,8 @@ peer-focus:top-[-8px] peer-focus:text-sm peer-focus:text-bloodred-500 peer-valid
                     >
                       <MDEditor
                         value={formData.content}
-                        onChange={(value) =>
-                          setFormData((prev) => ({ ...prev, content: value }))
+                        onChange={value =>
+                          setFormData(prev => ({ ...prev, content: value }))
                         }
                         height={400}
                       />
@@ -292,6 +318,8 @@ duration-300 hover:bg-bloodred-500 hover:text-white"
                           setEditingId(null);
                           setFormData({
                             ctfName: "",
+                            category: "",
+                            challengeName: "",
                             author: "",
                             tagline: "",
                             notes: "",

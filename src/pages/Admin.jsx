@@ -48,7 +48,7 @@ const Admin = () => {
       <div className="text-center text-5xl text-white font-share my-10">Admin Panel</div>
 
       <div className="flex md:flex-row flex-col w-full text-white px-8 py-4 gap-8 font-share">
-        <aside className="md:w-64 flex-shrink-0 md:sticky md:top-32 bg-[rgba(44,44,44,0.44)] p-6 text-2xl rounded-xl h-full space-y-4">
+        <aside className="md:w-64 flex-shrink-0 md:sticky md:top-32 bg-[rgba(44,44,44,0.44)] p-6 text-2xl rounded-xl h-full space-y-4 *:cursor-pointer">
           {isAdmin && (
             <>
               <button onClick={() => setActiveTab("addMembers")}>Add Members</button>
