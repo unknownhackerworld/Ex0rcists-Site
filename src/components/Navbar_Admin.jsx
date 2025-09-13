@@ -29,9 +29,11 @@ const Navbar_Admin = ({ username }) => {
 
   return (
     <nav className="bg-black shadow-[0_2px_12px_#c50400] font-share sticky top-0 z-100 p-6 flex justify-between items-center">
-      <div className="flex items-center space-x-3">
-        <img src={logo_dragon} alt="Dragon Logo" className="h-12 w-auto" />
-        <img src={logo_name} alt="Name Logo" className="h-8 w-auto" />
+      <div className="flex items-center space-x-3 hover:scale-110 transition-all duration-300">
+        <img src={logo_dragon} alt="Dragon Logo" className="h-12 w-auto saturate-150 drop-shadow-2xl
+            brightness-150" />
+        <img src={logo_name} alt="Name Logo" className="h-8 w-auto saturate-150 drop-shadow-2xl
+            brightness-150 " />
       </div>
 
       <div className="relative">

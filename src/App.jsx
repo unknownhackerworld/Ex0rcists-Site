@@ -9,12 +9,13 @@ import Login from './pages/Login'
 import Navbar_Admin from './components/Navbar_Admin'
 import AddWriteups from './components/AddWriteups'
 import SingleWriteup from './pages/SingleWriteup'
+import CTFChallenges from './pages/CTFChallenges'
+import WriteupsPage from './pages/WriteupsPage'
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { useState, useEffect } from "react"
 import { auth } from "./firebase"
-import CTFChallenges from './pages/CTFChallenges'
-import WriteupsPage from './pages/WriteupsPage'
+import Navbar_writeup from './components/Navbar_writeup'
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null)
@@ -29,67 +30,59 @@ function App() {
 
   return (
     <Router>
-      <Routes>
-        {/* Normal site with Navbar */}
-        <Route
-          path="/"
-          element={
-            <div className="bg-[#010101] min-h-screen w-full bg-grid bg-fixed scroll-smooth">
-              <Navbar />
-              <section id="home" className="scroll-mt-28">
-                <Home />
-              </section>
-              <section id="about" className="scroll-mt-28">
-                <About />
-              </section>
-              <section id="members" className="scroll-mt-28">
-                <Members />
-              </section>
-              <section id="writeups" className="scroll-mt-28">
-                <Writeups />
-              </section>
-            </div>
-          }
-        />
+      <div className="bg-[#010101] min-h-screen w-full bg-grid bg-fixed scroll-smooth">
+        <Routes>
+          {/* Normal site with Navbar */}
+          <Route
+            path="/"
+            element={
+              <>
+                <Navbar />
+                <section id="home" className="scroll-mt-28"><Home /></section>
+                <section id="about" className="scroll-mt-28"><About /></section>
+                <section id="members" className="scroll-mt-28"><Members /></section>
+                <section id="writeups" className="scroll-mt-28"><Writeups /></section>
+              </>
+            }
+          />
 
-        {/* Admin page */}
-        <Route
-          path="/admin"
-          element={
-            <div className="bg-[#010101] min-h-screen w-full bg-grid bg-fixed scroll-smooth">
-              <Navbar_Admin username={currentUser?.displayName} />
-              <Admin />
-            </div>
-          }
-        />
+          {/* Admin page */}
+          <Route
+            path="/admin"
+            element={
+              <>
+                <Navbar_Admin username={currentUser?.displayName} />
+                <Admin />
+              </>
+            }
+          />
 
-        {/* Add Writeups page */}
-        <Route
-          path="/add-writeup"
-          element={
-            <div className="bg-[#010101] min-h-screen w-full bg-grid bg-fixed scroll-smooth">
-              <Navbar_Admin username={currentUser?.displayName} />
-              <AddWriteups currentUser={currentUser} />
-            </div>
-          }
-        />
+          {/* Add Writeups page */}
+          <Route
+            path="/add-writeup"
+            element={
+              <>
+                <Navbar_Admin username={currentUser?.displayName} />
+                <AddWriteups currentUser={currentUser} />
+              </>
+            }
+          />
 
-        {/* Login page */}
-        <Route
-          path="/login"
-          element={
-            <div className="bg-[#010101] min-h-screen w-full bg-grid bg-fixed scroll-smooth">
-              <Navbar_Admin username={currentUser?.displayName} />
-              <Login />
-            </div>
-          }
-        />
+          <Route
+            path="/login"
+            element={
+              <>
+                <Navbar_Admin username={currentUser?.displayName} />
+                <Login />
+              </>
+            }
+          />
 
-        <Route path="/writeup/:id" element={<><Navbar /><CTFChallenges /></>} />
-        <Route path="/writeup/" element={<><Navbar /><WriteupsPage /></>} />
-        <Route path="/writeup/:ctfName/:categoryName/:challengeName" element={<><Navbar /><SingleWriteup /></>} />
-
-      </Routes>
+          <Route path="/writeup/:id" element={<><Navbar_writeup /><CTFChallenges /></>} />
+          <Route path="/writeup/" element={<><Navbar_writeup /><WriteupsPage /></>} />
+          <Route path="/writeup/:ctfName/:categoryName/:challengeName" element={<><Navbar_writeup /><SingleWriteup /></>} />
+        </Routes>
+      </div>
     </Router>
   )
 }

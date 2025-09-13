@@ -7,7 +7,7 @@ import "@uiw/react-markdown-preview/markdown.css";
 import TagInput from "./TagInput";
 
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dm3b6hwzu/image/upload";
-const UPLOAD_PRESET = "ex0rcists"; // must be unsigned
+const UPLOAD_PRESET = "ex0rcists"; 
 
 const AddWriteups = ({ currentUser }) => {
   const refs = {

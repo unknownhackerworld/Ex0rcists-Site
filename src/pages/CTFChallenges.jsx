@@ -41,7 +41,7 @@ const CTFChallenges = () => {
   console.log(challenges)
 
   return (
-    <div className="min-h-screen bg-[#010101] text-white px-6 py-10 font-share">
+    <div className="min-h-screen text-white px-6 py-10 font-share">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-5xl font-bold text-bloodred-500 mb-10 text-center">
           {ctfName} {selectedCategory ? `- ${selectedCategory}` : "Categories"}
