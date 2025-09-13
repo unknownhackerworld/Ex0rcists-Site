@@ -2,6 +2,7 @@
 
 @theme {
   --color-bloodred-500: oklch(0.5181 0.2112 29.45);
+  --color-bloodred-300: oklch(0.3421 0.14039179783780448 29.233880279627886); 
   --font-kode: "Kode Mono", monospace;
   --font-share: "Share Tech Mono", monospace;
 
@@ -32,4 +33,22 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+
+.flicker-logo {
+  font-size: 4em;
+  text-align: center;
+  animation: flicker 3s infinite alternate;
+}
+
+@keyframes flicker {
+  0%, 19.9%, 22%, 62.9%, 64%, 64.9%, 70%, 100% {
+    opacity: 0.99;
+    text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.4), 1px -1px 0 rgba(255, 255, 255, 0.4), -1px 1px 0 rgba(255, 255, 255, 0.4), 1px 1px 0 rgba(255, 255, 255, 0.4), 0 -2px 8px, 0 0 2px, 0 0 5px #ff7e00, 0 0 15px #ff4444, 0 0 2px #ff7e00, 0 2px 3px #000;
+  }
+  20%, 21.9%, 63%, 63.9%, 65%, 69.9% {
+    opacity: 0.4;
+    text-shadow: none;
+  }
 }

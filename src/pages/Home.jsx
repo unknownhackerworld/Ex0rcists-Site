@@ -278,7 +278,7 @@ Their motto: The Ritual Begins At Root Access.`,
   return (
     <>
       <div className="flex flex-col md:flex-row w-full items-center justify-center px-4 md:px-6 lg:px-8 mt-10">
-        <div className="flex-1 flex justify-center items-center relative w-full max-w-sm md:max-w-md lg:max-w-lg">
+        <div className="flex-1 flex justify-center items-center relative w-full max-w-sm md:max-w-md lg:max-w-lg flicker-logo">
           <img
             src={logo}
             alt="Ex0rcists Logo"
@@ -299,7 +299,7 @@ Their motto: The Ritual Begins At Root Access.`,
           id="terminal"
           className="flex-1 md:flex-[1.3] max-w-full md:max-w-[50rem] md:h-112 rounded-2xl border border-[#730000] 
           bg-black text-white p-6 md:p-8 mt-8 md:mt-10 ml-0 md:ml-8 mr-0 md:mr-4 font-kode text-base md:text-xl 
-          leading-normal overflow-y-auto scrollbar-hide"
+          leading-normal overflow-y-auto scrollbar-hide" onClick={() => inputRef.current?.focus()}
         >
           {history.map((item, index) => (
             <div key={index} className="mb-4">
@@ -329,6 +329,7 @@ Their motto: The Ritual Begins At Root Access.`,
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               disabled={typing}
+              id="terminal-input"
               className="bg-transparent outline-none font-kode w-[90%] sm:w-auto"
             />
           </div>
