@@ -7,10 +7,14 @@ import Writeups from './pages/Writeups'
 import Admin from './pages/Admin'
 import Login from './pages/Login'
 import Navbar_Admin from './components/Navbar_Admin'
+import AddWriteups from './components/AddWriteups'
+import SingleWriteup from './pages/SingleWriteup'
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { useState, useEffect } from "react"
 import { auth } from "./firebase"
+import CTFChallenges from './pages/CTFChallenges'
+import WriteupsPage from './pages/WriteupsPage'
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null)
@@ -18,7 +22,7 @@ function App() {
   useEffect(() => {
     const unsub = auth.onAuthStateChanged(user => {
       setCurrentUser(user)
-      console.log(user)
+      console.log("Auth state changed:", user)
     })
     return () => unsub()
   }, [])
@@ -59,6 +63,17 @@ function App() {
           }
         />
 
+        {/* Add Writeups page */}
+        <Route
+          path="/add-writeup"
+          element={
+            <div className="bg-[#010101] min-h-screen w-full bg-grid bg-fixed scroll-smooth">
+              <Navbar_Admin username={currentUser?.displayName} />
+              <AddWriteups currentUser={currentUser} />
+            </div>
+          }
+        />
+
         {/* Login page */}
         <Route
           path="/login"
@@ -69,6 +84,11 @@ function App() {
             </div>
           }
         />
+
+        <Route path="/writeup/:id" element={<><Navbar /><CTFChallenges /></>} />
+        <Route path="/writeup/" element={<><Navbar /><WriteupsPage /></>} />
+        <Route path="/writeup/:ctfName/:categoryName/:challengeName" element={<><Navbar /><SingleWriteup /></>} />
+
       </Routes>
     </Router>
   )

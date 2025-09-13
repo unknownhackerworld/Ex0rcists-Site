@@ -10,7 +10,7 @@ import {
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [email, setEmail] = useState(""); // for Email/Password login
+  const [email, setEmail] = useState(""); 
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -34,7 +34,6 @@ const Login = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      // Check if this email exists in Email/Password provider
       const methods = await fetchSignInMethodsForEmail(auth, user.email);
       if (!methods.includes("password")) {
         alert(
@@ -55,7 +54,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-black font-share text-white">
+    <div className="flex flex-col items-center justify-center h-screen  font-share text-white">
       <h1 className="text-4xl mb-6">Admin Login</h1>
 
       <form onSubmit={loginWithEmail} className="space-y-4 w-80">

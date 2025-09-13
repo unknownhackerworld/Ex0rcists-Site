@@ -10,11 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@cloudinary/react": "^1.14.3",
+    "@cloudinary/url-gen": "^1.22.0",
     "@react-firebase/database": "^0.3.11",
     "@tailwindcss/vite": "^4.1.13",
     "@uiw/react-markdown-preview": "^5.1.5",
     "@uiw/react-md-editor": "^4.0.8",
     "axios": "^1.12.1",
+    "cloudinary": "^2.7.0",
     "firebase": "^12.2.1",
     "firebase-admin": "^13.5.0",
     "react": "^19.1.1",

@@ -36,7 +36,7 @@ const Navbar_Admin = ({ username }) => {
 
       <div className="relative">
         <span
-          className="text-bloodred-500 cursor-pointer hover:underline"
+          className="text-bloodred-500 cursor-pointer hover:underline text-xl"
           onClick={() => setMenuOpen(!menuOpen)}
         >
           Hello, {username || "User"}!

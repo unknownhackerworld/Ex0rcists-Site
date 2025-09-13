@@ -193,7 +193,6 @@ const Members = () => {
         </aside>
 
 
-        {/*Mobile */}
         <div className="md:hidden w-full flex items-center gap-2 mb-4 relative">
           <button
             onClick={() => scroll("left")}
@@ -227,7 +226,6 @@ const Members = () => {
         </div>
 
 
-        {/* Member Cards */}
         <main className="flex-1">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-6">
             {filteredMembers.map((m, i) => (
@@ -250,7 +248,6 @@ const Members = () => {
         </main>
       </div>
 
-      {/* Glitch overlay */}
       {isGlitchActive && (
         <div className="glitch-overlay" aria-hidden>
           <div className="glitch-bar" style={{ top: "18%" }} />
@@ -265,7 +262,6 @@ const Members = () => {
         </div>
       )}
 
-      {/* Modal */}
       {isModalOpen && activeMemberIndex !== null && (
         <div
           className="modal-overlay"

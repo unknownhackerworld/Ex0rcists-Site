@@ -152,7 +152,6 @@ const EditMembers = () => {
         Edit Members
       </h1>
 
-      {/* Member selection dropdown */}
       <div className="mb-6">
         <select
           value={selectedMember}
@@ -168,13 +167,11 @@ const EditMembers = () => {
         </select>
       </div>
 
-      {/* Show form only if member selected */}
       {selectedMember && (
         <form
           className="grid grid-cols-1 md:grid-cols-2 gap-8"
           onSubmit={handleSubmit}
         >
-          {/* Image upload / preview */}
           <div className="col-span-2 flex justify-center">
             {!imagePreview ? (
               <div
@@ -214,7 +211,6 @@ const EditMembers = () => {
             )}
           </div>
 
-          {/* Inputs */}
           {[
             { key: "displayName", label: "Display Name" },
             { key: "tagline", label: "Tagline" },
@@ -255,7 +251,6 @@ const EditMembers = () => {
             </div>
           ))}
 
-          {/* Tags */}
           <div className="relative">
             <div
               onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -311,7 +306,6 @@ const EditMembers = () => {
             </div>
           </div>
 
-          {/* Submit */}
           <div className="col-span-2 flex justify-center mt-6">
             <button
               type="submit"

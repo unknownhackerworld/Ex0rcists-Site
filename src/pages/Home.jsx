@@ -184,8 +184,8 @@ Their motto: The Ritual Begins At Root Access.`,
           {
             ...last,
             output: append
-              ? last.output + text.charAt(i)  // Only append the current character
-              : text.substring(0, i + 1),     // Build from beginning for new text
+              ? last.output + text.charAt(i)  
+              : text.substring(0, i + 1),     
           },
         ];
       });
@@ -269,7 +269,6 @@ Their motto: The Ritual Begins At Root Access.`,
   };
 
   useEffect(() => {
-    // remove auto scroll completely
     inputRef.current?.focus();
   }, [history, typing]);
 

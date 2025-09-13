@@ -1,94 +1,146 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import MDEditor from "@uiw/react-md-editor";
-import { ref, push } from "firebase/database";
-import { database } from "../firebase"; // adjust path if needed
+import { ref, set, onValue } from "firebase/database";
+import { database } from "../firebase";
 import "@uiw/react-md-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
+import TagInput from "./TagInput";
 
-const AddWriteups = ({currentUser}) => {
+const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dm3b6hwzu/image/upload";
+const UPLOAD_PRESET = "ex0rcists"; // must be unsigned
+
+const AddWriteups = ({ currentUser }) => {
   const refs = {
     ctfName: useRef(null),
-    author: useRef(null),
+    challengeName: useRef(null),
     notes: useRef(null),
-    tagline: useRef(null),
   };
 
   const [markdown, setMarkdown] = useState("## Start writing your CTF writeup...");
+  const [allTaglines, setAllTaglines] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
-  // Helper to create unique keys
-  const generateKey = () => "img_" + Date.now() + "_" + Math.random().toString(36).substring(2, 8);
+  // Fetch categories
+  useEffect(() => {
+    const catRef = ref(database, "writeups/categories");
+    onValue(catRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        const arr = Object.entries(data).map(([id, label]) => ({ id, label }));
+        setCategories(arr);
+      } else {
+        setCategories([]);
+      }
+    });
+  }, []);
 
-  // Handle paste
-  const handlePaste = (event) => {
+  // Fetch taglines
+  useEffect(() => {
+    const taglineRef = ref(database, "writeups/tagline");
+    onValue(taglineRef, (snapshot) => {
+      if (snapshot.exists()) {
+        setAllTaglines(Object.values(snapshot.val()));
+      } else {
+        setAllTaglines([]);
+      }
+    });
+  }, []);
+
+  const insertAtCursor = (text) => {
+    const textarea = document.querySelector(".w-md-editor-text-input");
+    if (!textarea) {
+      setMarkdown((prev) => prev + text);
+      return;
+    }
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    setMarkdown((prev) => prev.slice(0, start) + text + prev.slice(end));
+    setTimeout(() => {
+      textarea.focus();
+      textarea.selectionStart = textarea.selectionEnd = start + text.length;
+    }, 0);
+  };
+
+  const uploadToCloudinary = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", UPLOAD_PRESET);
+
+    const res = await fetch(CLOUDINARY_URL, {
+      method: "POST",
+      body: formData,
+    });
+    const data = await res.json();
+    return data.secure_url; 
+  };
+
+  const handlePaste = async (event) => {
     const items = (event.clipboardData || event.originalEvent.clipboardData).items;
     for (let item of items) {
       if (item.type.indexOf("image") !== -1) {
         const file = item.getAsFile();
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const base64 = e.target.result;
-          const key = generateKey();
-          sessionStorage.setItem(key, base64);
-          setMarkdown((prev) => prev + `\n\n![pasted image](session://${key})\n\n`);
-        };
-        reader.readAsDataURL(file);
+        const url = await uploadToCloudinary(file);
+        insertAtCursor(`![pasted image](${url})`);
       }
     }
   };
 
-  // Handle drop
-  const handleDrop = (event) => {
+  const handleDrop = async (event) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
     if (file && file.type.startsWith("image/")) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const base64 = e.target.result;
-        const key = generateKey();
-        sessionStorage.setItem(key, base64);
-        setMarkdown((prev) => prev + `\n\n![dropped image](session://${key})\n\n`);
-      };
-      reader.readAsDataURL(file);
+      const url = await uploadToCloudinary(file);
+      insertAtCursor(`![dropped image](${url})`);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const ctfName = refs.ctfName.current.value.trim();
-    const tagline = refs.tagline.current.value.trim();
+    const challengeName = refs.challengeName.current.value.trim();
     const notes = refs.notes.current.value.trim();
-    
-    if (!ctfName || !tagline || !markdown) {
+    const category = selectedCategory.trim();
+
+    if (!ctfName || !challengeName || !category || tags.length === 0 || !markdown) {
       alert("⚠️ Please fill in all fields before submitting.");
       return;
     }
 
-    // Replace session:// references with base64
-    let finalMarkdown = markdown.replace(/!\[.*?\]\(session:\/\/(.*?)\)/g, (match, key) => {
-      const base64 = sessionStorage.getItem(key);
-      if (base64) {
-        return match.replace(`session://${key}`, base64);
-      }
-      return match;
-    });
-
     try {
-      const writeupsRef = ref(database, "writeups");
-      await push(writeupsRef, {
+      const writeupRef = ref(database, `writeups/${ctfName}/${category}/${challengeName}`);
+      await set(writeupRef, {
         ctfName,
-        author: currentUser.displayName,
-        tagline,
+        challengeName,
+        category,
+        author: currentUser?.displayName || "Anonymous",
+        tags,
         notes,
-        content: finalMarkdown,
+        content: markdown, 
         createdAt: new Date().toISOString(),
+        visible: true,
       });
+
+      for (let tag of tags) {
+        if (!allTaglines.includes(tag)) {
+          const taglineRef = ref(database, `writeups/tagline/${tag}`);
+          await set(taglineRef, tag);
+        }
+      }
+
+      if (!categories.find((c) => c.id === category)) {
+        const catRef = ref(database, `writeups/categories/${category}`);
+        await set(catRef, category.charAt(0).toUpperCase() + category.slice(1));
+      }
 
       alert("✅ Writeup added successfully!");
       refs.ctfName.current.value = "";
-      refs.tagline.current.value = "";
+      refs.challengeName.current.value = "";
+      refs.notes.current.value = "";
+      setTags([]);
       setMarkdown("## Start writing your CTF writeup...");
-      sessionStorage.clear(); // optional: clear all stored images
+      setSelectedCategory("");
     } catch (error) {
       console.error("Error saving writeup:", error);
       alert("❌ Failed to save writeup.");
@@ -102,8 +154,8 @@ const AddWriteups = ({currentUser}) => {
       <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 text-white">
         {[
           { key: "ctfName", label: "CTF Name" },
+          { key: "challengeName", label: "Challenge Name" },
           { key: "notes", label: "Notes" },
-          { key: "tagline", label: "Tagline" },
         ].map(({ key, label }) => (
           <div key={key} className="relative group" onClick={() => refs[key].current?.focus()}>
             <input
@@ -111,6 +163,8 @@ const AddWriteups = ({currentUser}) => {
               type="text"
               className="peer p-3 w-full rounded-md bg-black text-white focus:outline-none gradient-border"
               placeholder=" "
+              required
+              minLength={1}
             />
             <label
               className="absolute left-3 top-3 text-gray-400 transition-all duration-300 
@@ -121,6 +175,40 @@ const AddWriteups = ({currentUser}) => {
             </label>
           </div>
         ))}
+
+        <div className="relative group">
+          <input
+            type="text"
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            list="category-list"
+            className="peer p-3 w-full rounded-md bg-black text-white focus:outline-none gradient-border"
+            placeholder=" "
+            required
+          />
+          <label
+            className="absolute left-3 top-3 text-gray-400 transition-all duration-300 
+              peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-500 peer-placeholder-shown:text-base 
+              peer-focus:top-[-8px] peer-focus:text-sm peer-focus:text-bloodred-500 peer-valid:top-[-8px] peer-valid:text-sm peer-valid:text-bloodred-500 bg-black px-1"
+          >
+            Category
+          </label>
+          <datalist id="category-list">
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.label}
+              </option>
+            ))}
+          </datalist>
+        </div>
+
+        <div>
+          <label className="block mb-2 text-gray-400">Tags</label>
+          <TagInput
+            suggestions={allTaglines}
+            onChange={(selectedTags) => setTags(selectedTags)}
+          />
+        </div>
 
         <div
           onPaste={handlePaste}

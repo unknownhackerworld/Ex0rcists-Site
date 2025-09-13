@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from "react";
 import MDEditor from "@uiw/react-md-editor";
-import {
-  ref,
-  onValue,
-  remove,
-  update,
-} from "firebase/database";
+import { ref, onValue, remove, update } from "firebase/database";
 import { database } from "../firebase";
 import "@uiw/react-md-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
 
 const EditWriteups = ({ currentUser }) => {
   const [writeups, setWriteups] = useState([]);
+  const [Admins, setAdmins] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({
     ctfName: "",
@@ -23,18 +19,33 @@ const EditWriteups = ({ currentUser }) => {
 
   useEffect(() => {
     const writeupsRef = ref(database, "writeups");
+    const adminsRef = ref(database, "admins");
     onValue(writeupsRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
         const list = Object.keys(data).map((key) => ({
           id: key,
+          visible: data[key].visible,
           ...data[key],
         }));
         setWriteups(list);
+        console.log("Fetched writeups:", list);
       } else {
         setWriteups([]);
       }
     });
+    onValue(adminsRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const list = Object.keys(data).map((key) => data[key]);
+        setAdmins(list);
+        console.log("Fetched admins:", list);
+      } else {
+        setAdmins([]);
+        console.log("No admins found");
+      }
+    });
+
   }, []);
 
   const generateKey = () =>
@@ -61,7 +72,6 @@ const EditWriteups = ({ currentUser }) => {
     }
   };
 
-  // Drop handler
   const handleDrop = (event) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
@@ -104,7 +114,6 @@ const EditWriteups = ({ currentUser }) => {
     });
   };
 
-
   const handleUpdate = async (e) => {
     e.preventDefault();
     if (!editingId) return;
@@ -143,7 +152,6 @@ const EditWriteups = ({ currentUser }) => {
     }
   };
 
-  // Handle delete
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this writeup?")) {
       try {
@@ -157,16 +165,28 @@ const EditWriteups = ({ currentUser }) => {
     }
   };
 
+  const handleToggleVisible = async (id, currentVisible) => {
+    try {
+      const writeupRef = ref(database, `writeups/${id}`);
+      await update(writeupRef, { visible: !currentVisible });
+    } catch (error) {
+      console.error("Error updating visibility:", error);
+      alert("❌ Failed to update visibility.");
+    }
+  };
+
   return (
     <div className="p-6">
       <h1 className="text-4xl mb-6 font-bold text-white">Edit Writeups</h1>
 
-      {/* List of writeups */}
-
       <ul className="mb-6 space-y-3">
-        {writeups.filter(item => item.author === currentUser.displayName).length > 0 ? (
+        {writeups.length > 0 ? (
           writeups
-            .filter(item => item.author === currentUser.displayName)
+            .filter((item) =>
+              Object.values(Admins).includes(currentUser.email)
+                ? true
+                : item.author === currentUser.displayName
+            )
             .map((item) => (
               <li
                 key={item.id}
@@ -176,16 +196,31 @@ const EditWriteups = ({ currentUser }) => {
                   <div>
                     <h2 className="text-xl font-semibold">{item.ctfName}</h2>
                     <p className="text-gray-400">{item.tagline}</p>
-
                     <span className="text-sm text-gray-500">By @{item.author}</span>
                   </div>
-                  <div className="space-x-3">
+
+                  <div className="flex items-center space-x-3">
+                    <label className="flex items-center space-x-2 cursor-pointer">
+                      <span className="text-sm text-gray-300">Visible</span>
+                      <div
+                        className={`relative w-12 h-6 flex items-center rounded-full p-1 transition-colors duration-300 
+      ${item.visible ? "bg-bloodred-500" : "bg-gray-600"}`}
+                        onClick={() => handleToggleVisible(item.id, item.visible ?? true)}
+                      >
+                        <div
+                          className={`w-4 h-4 rounded-full bg-white shadow-md transform transition-transform duration-300 
+        ${item.visible ? "translate-x-6" : "translate-x-0"}`}
+                        />
+                      </div>
+                    </label>
+
                     <button
                       onClick={() => handleEdit(item)}
                       className="px-4 py-2 bg-bloodred-500 text-white rounded-md"
                     >
                       Edit
                     </button>
+
                     <button
                       onClick={() => handleDelete(item.id)}
                       className="px-4 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-600 hover:text-white"
@@ -197,7 +232,7 @@ const EditWriteups = ({ currentUser }) => {
 
                 {editingId === item.id && (
                   <form onSubmit={handleUpdate} className="grid grid-cols-1 gap-6 text-white mt-6">
-                    {["ctfName", "author","notes","tagline"].map((key) => (
+                    {["ctfName", "author", "notes", "tagline"].map((key) => (
                       <div key={key} className="relative group">
                         <input
                           type="text"
@@ -217,8 +252,10 @@ peer-focus:top-[-8px] peer-focus:text-sm peer-focus:text-bloodred-500 peer-valid
                           {key === "ctfName"
                             ? "CTF Name"
                             : key === "author"
-                              ? "Author" : key === "notes" ? "Notes"
-                              : "Tagline"}
+                              ? "Author"
+                              : key === "notes"
+                                ? "Notes"
+                                : "Tagline"}
                         </label>
                       </div>
                     ))}
@@ -257,6 +294,7 @@ duration-300 hover:bg-bloodred-500 hover:text-white"
                             ctfName: "",
                             author: "",
                             tagline: "",
+                            notes: "",
                             content: "## Start editing your CTF writeup...",
                           });
                           sessionStorage.clear();
@@ -276,29 +314,6 @@ duration-300 hover:bg-gray-600 hover:text-white"
           <span className="text-gray-400">Add Writeups to Edit Them!</span>
         )}
       </ul>
-
-
-      <style>{`
-        @keyframes rotateGradient {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-
-        .gradient-border {
-          border: 2px solid transparent;
-          border-radius: 0.5rem;
-          background-image: linear-gradient(black, black),
-            linear-gradient(270deg, var(--color-bloodred-500), var(--color-bloodred-300), var(--color-bloodred-500));
-          background-origin: border-box;
-          background-clip: padding-box, border-box;
-          background-size: 300% 300%;
-        }
-
-        input:focus, .gradient-border:focus-within {
-          animation: rotateGradient 3s linear infinite;
-        }
-      `}</style>
     </div>
   );
 };

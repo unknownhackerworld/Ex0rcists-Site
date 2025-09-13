@@ -27,7 +27,6 @@ const Admin = () => {
         const snap = await get(ref(database, `admins`));
         if (snap.exists()) {
           const admins = snap.val();
-          // ✅ Check if current user's email is in admins
           const email = u.email;
           const isAdminEmail = Object.values(admins).includes(email);
           setIsAdmin(isAdminEmail);
@@ -49,7 +48,7 @@ const Admin = () => {
       <div className="text-center text-5xl text-white font-share my-10">Admin Panel</div>
 
       <div className="flex md:flex-row flex-col w-full text-white px-8 py-4 gap-8 font-share">
-        <aside className="hidden md:flex flex-col gap-y-5 bg-[rgba(44,44,44,0.44)] p-6 sticky top-24 text-2xl rounded-xl">
+        <aside className="md:w-64 flex-shrink-0 md:sticky md:top-32 bg-[rgba(44,44,44,0.44)] p-6 text-2xl rounded-xl h-full space-y-4">
           {isAdmin && (
             <>
               <button onClick={() => setActiveTab("addMembers")}>Add Members</button>
