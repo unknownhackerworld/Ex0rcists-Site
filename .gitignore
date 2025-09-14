@@ -24,3 +24,7 @@ dist-ssr
 *.sw?
 ex0rcists-site-firebase-adminsdk-fbsvc-31248a2735.json
 src/updateDisplayName.js
+
+# Local Netlify folder
+.netlify
+src/assets/members/

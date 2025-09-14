@@ -99,11 +99,22 @@ const AddMembers = () => {
       .map((id) => challengeTags.find((t) => t.id === id)?.label);
 
     try {
-      const userCred = await createUserWithEmailAndPassword(
-        auth,
-        formData.email,
-        "Ex0rcists@2025"  
-      );
+      const res = await fetch("/.netlify/functions/createUser", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: formData.email,
+          displayName: formData.displayName,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to create user");
+      }
+
+      const uid = data.uid; // ✅ The UID returned from backend
 
       await set(ref(database, `members/${formData.name}`), {
         displayName: formData.displayName,
@@ -113,10 +124,11 @@ const AddMembers = () => {
         Categories: categories,
         ProfilePic: formData.profilePic,
         Email: formData.email,
-        UID: userCred.user.uid,
+        UID: uid, // ✅ Store UID from backend
       });
 
       alert("✅ Member added successfully with authentication!");
+
       setFormData({
         name: "",
         displayName: "",
@@ -132,7 +144,7 @@ const AddMembers = () => {
       console.error("Error saving data:", error);
       alert("❌ Error saving data: " + error.message);
     }
-  };
+  }
 
   return (
     <div className="p-6">
