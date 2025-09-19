@@ -96,9 +96,8 @@ const AddMembers = () => {
       return;
     }
 
-    const categories = selectedTags
-      .filter((id) => id !== "all")
-      .map((id) => challengeTags.find((t) => t.id === id)?.label);
+    const categories = selectedTags.filter((id) => id !== "all");
+
 
     try {
       const res = await fetch("/.netlify/functions/createUser", {
