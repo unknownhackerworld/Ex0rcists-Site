@@ -27,6 +27,7 @@ const EditMembers = () => {
     { id: "pwn", label: "Pwn" },
     { id: "steg", label: "Steganography" },
     { id: "forensics", label: "Forensics" },
+    { id: "crypto", label: "Cryptography" },
   ];
 
   const refs = {

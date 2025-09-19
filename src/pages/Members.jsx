@@ -227,7 +227,6 @@ const Members = () => {
         </div>
 
 
-        {/* Cards */}
         <main className="flex-1">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-6">
             {filteredMembers.map((m, i) => (
@@ -345,11 +344,8 @@ const Members = () => {
                     <div>Fields:</div>
                     <div className="mt-1 flex gap-2 flex-wrap">
                       {members[activeMemberIndex].fields.map((f) => (
-                        <span
-                          key={f}
-                          className="text-xs px-2 py-1 rounded bg-white/6"
-                        >
-                          {f}
+                        <span key={f} className="text-xs px-2 py-1 rounded bg-white/6">
+                          {categories[f] || f}
                         </span>
                       ))}
                     </div>
