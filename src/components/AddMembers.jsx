@@ -8,6 +8,7 @@ import { auth, database } from "../firebase";
 
 
 const AddMembers = () => {
+  const [categories, setCategories] = useState({}); 
   const [selectedTags, setSelectedTags] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
@@ -32,6 +33,7 @@ const AddMembers = () => {
     { id: "pwn", label: "Pwn" },
     { id: "steg", label: "Steganography" },
     { id: "forensics", label: "Forensics" },
+    { id: "crypto", label: "Cryptography" }
   ];
   
   const refs = {

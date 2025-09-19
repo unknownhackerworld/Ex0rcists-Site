@@ -4,6 +4,7 @@ import { database } from "../firebase";
 
 const Members = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [categories, setCategories] = useState({});
   const [members, setMembers] = useState([]);
   const [flippedIndex, setFlippedIndex] = useState(null);
 
@@ -32,16 +33,18 @@ const Members = () => {
     return () => unsubscribe();
   }, []);
 
-  const categories = [
-    { id: "all", label: "All" },
-    { id: "web", label: "Web Exploitation" },
-    { id: "osint", label: "OSINT" },
-    { id: "re", label: "Reverse Engineering" },
-    { id: "pwn", label: "Pwn" },
-    { id: "steg", label: "Steganography" },
-    { id: "forensics", label: "Forensics" },
-  ];
+  useEffect(() => {
+    const categoriesRef = ref(database, "categories");
+    const unsubscribe = onValue(categoriesRef, (snapshot) => {
+      if (snapshot.exists()) {
+        setCategories(snapshot.val());
+      } else {
+        setCategories({});
+      }
+    });
 
+    return () => unsubscribe();
+  }, []);
   const [activeMemberIndex, setActiveMemberIndex] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isGlitchActive, setIsGlitchActive] = useState(false);
@@ -166,26 +169,29 @@ const Members = () => {
       </div>
 
       <div className="flex md:flex-row flex-col w-full text-white px-8 py-4 gap-8 font-share">
-        {/* Sidebar */}
         <aside className="hidden md:block flex-shrink-0 rounded-xl bg-[rgba(44,44,44,0.44)] p-6 sticky top-24 self-start">
           <div className="absolute left-10 top-6 bottom-6 w-[1px] bg-[#950C09]" />
           <ul className="space-y-8">
-            {categories.map((cat) => (
-              <li key={cat.id} className="relative flex items-center ml-14 text-gray-200 text-lg">
+            {Object.entries(categories).map(([key, label]) => (
+              <li
+                key={key}
+                className="relative flex items-center ml-14 text-gray-200 text-lg"
+              >
                 <span className="absolute -left-10 w-8 h-[1px] bg-[#950C09]" />
                 <button
-                  onClick={() => setSelectedCategory(cat.label)}
-                  className={`px-2 py-1 transition-colors ${selectedCategory === cat.label
+                  onClick={() => setSelectedCategory(key)}
+                  className={`px-2 py-1 transition-colors ${selectedCategory === key
                       ? "text-white font-semibold"
                       : "text-gray-300 hover:text-white"
                     }`}
                 >
-                  {cat.label}
+                  {label}
                 </button>
               </li>
             ))}
           </ul>
         </aside>
+
 
         {/* Mobile Scrollable Categories */}
         <div className="md:hidden w-full flex items-center gap-2 mb-4 relative">
@@ -195,17 +201,20 @@ const Members = () => {
           >
             &lt;
           </button>
-          <div ref={scrollRef} className="flex gap-3 overflow-x-auto scrollbar-hide px-8">
-            {categories.map((cat) => (
+          <div
+            ref={scrollRef}
+            className="flex gap-3 overflow-x-auto scrollbar-hide px-8"
+          >
+            {Object.entries(categories).map(([key, label]) => (
               <button
-                key={cat.id}
-                onClick={() => setSelectedCategory(cat.label)}
-                className={`flex-shrink-0 px-4 py-2 text-sm rounded-full border transition ${selectedCategory === cat.label
+                key={key}
+                onClick={() => setSelectedCategory(key)}
+                className={`flex-shrink-0 px-4 py-2 text-sm rounded-full border transition ${selectedCategory === key
                     ? "bg-gradient-to-r from-[#C50400] to-[#5F0200] text-white border-transparent"
                     : "border-[#950C09] text-gray-300 hover:text-white hover:border-white"
                   }`}
               >
-                {cat.label}
+                {label}
               </button>
             ))}
           </div>
@@ -216,6 +225,7 @@ const Members = () => {
             &gt;
           </button>
         </div>
+
 
         {/* Cards */}
         <main className="flex-1">
