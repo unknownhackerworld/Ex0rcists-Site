@@ -1,12 +1,15 @@
 const admin = require("firebase-admin");
 const { getDatabase } = require("firebase-admin/database");
 
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+
+
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert(
-      require("../../.netlify/functions/ex0rcists-site-firebase-adminsdk-fbsvc-31248a2735.json")
+      serviceAccount
     ),
-    databaseURL: process.env.FIREBASE_DATABASE_URL
+    databaseURL: "https://ex0rcists-site-default-rtdb.firebaseio.com"
   });
 }
 
