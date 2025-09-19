@@ -1,8 +1,12 @@
 const admin = require("firebase-admin");
+const { getDatabase } = require("firebase-admin/database");
 
 if (!admin.apps.length) {
   admin.initializeApp({
-    credential: admin.credential.cert(require("../../.netlify/functions/ex0rcists-site-firebase-adminsdk-fbsvc-31248a2735.json"))
+    credential: admin.credential.cert(
+      require("../../.netlify/functions/ex0rcists-site-firebase-adminsdk-fbsvc-31248a2735.json")
+    ),
+    databaseURL: process.env.FIREBASE_DATABASE_URL
   });
 }
 
@@ -14,6 +18,15 @@ exports.handler = async (event) => {
       email,
       password: "Ex0rcists@2025",
       displayName,
+    });
+
+    const db = getDatabase();
+    await db.ref("users/" + user.uid).set({
+      email,
+      displayName,
+      firstLogin: true,
+      totpEnabled: false,
+      totpSecret: null,
     });
 
     return {
