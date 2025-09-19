@@ -50,11 +50,10 @@ const Members = () => {
   const [isGlitchActive, setIsGlitchActive] = useState(false);
   const [closing, setClosing] = useState(false);
 
-  const filteredMembers =
-    selectedCategory === "All"
-      ? members
-      : members.filter((m) => m.fields.includes(selectedCategory));
-
+  const filteredMembers = members.filter((m) =>
+    selectedCategory === "all" ||
+    m.fields.includes(categories[selectedCategory])
+  );
 
   const openModal = (index) => {
     setFlippedIndex(index);
@@ -345,9 +344,10 @@ const Members = () => {
                     <div className="mt-1 flex gap-2 flex-wrap">
                       {members[activeMemberIndex].fields.map((f) => (
                         <span key={f} className="text-xs px-2 py-1 rounded bg-white/6">
-                          {categories[f] || f}
+                          {f}
                         </span>
                       ))}
+
                     </div>
                   </div>
                 </div>
