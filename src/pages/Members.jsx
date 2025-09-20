@@ -139,7 +139,6 @@ const Members = () => {
       </div>
 
       <div className="flex md:flex-row flex-col w-full text-white px-8 py-4 gap-8 font-share">
-        {/* Sidebar */}
         <aside className="hidden md:block flex-shrink-0 rounded-xl bg-[rgba(44,44,44,0.44)] p-6 sticky top-24 self-start">
           <div className="absolute left-10 top-6 bottom-6 w-[1px] bg-[#950C09]" />
           <ul className="space-y-8">
@@ -208,41 +207,83 @@ const Members = () => {
           </button>
         </div>
 
-        {/* Members Grid */}
         <main className="flex-1">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-6">
-            {filteredMembers.map((m) => (
-              <div
-                key={m.id}
-                onClick={() => openModal(m)}
-                className="relative cursor-pointer perspective"
-              >
-                <div
-                  className={`transition-transform duration-700 preserve-3d ${flippedMember?.id === m.id ? "rotate-y-180 scale-110" : ""
-                    }`}
-                >
-                  <div className="backface-hidden">
-                    <div className="group bg-[#111]/40 rounded-xl p-4 flex flex-col items-center 
-                      transition hover:scale-105 hover:shadow-[0_0_20px_rgba(197,4,0,0.6)] md:saturate-0 hover:saturate-100 duration-500"
+          <div className="p-6">
+            {filteredMembers.some((m) => m.name.trim() === "Kalpana B N") && (
+              <div className="flex justify-center mb-10">
+                {filteredMembers
+                  .filter((m) => m.name.trim() === "Kalpana B N")
+                  .map((m) => (
+                    <div
+                      key={m.id}
+                      onClick={() => openModal(m)}
+                      className="relative cursor-pointer perspective"
                     >
-                      <div className="w-28 h-28 rounded-full overflow-hidden border-2 border-transparent group-hover:border-[#C50400] transition">
-                        <img
-                          src={m.picture}
-                          alt={m.name}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                        />
+                      <div
+                        className={`transition-transform duration-700 preserve-3d ${flippedMember?.id === m.id ? "rotate-y-180 scale-110" : ""
+                          }`}
+                      >
+                        <div className="backface-hidden">
+                          <div className="group bg-[#111]/40 rounded-xl p-6 flex flex-col items-center 
+                    transition hover:scale-110 hover:shadow-[0_0_25px_rgba(197,4,0,0.7)] md:saturate-0 hover:saturate-100 duration-500"
+                          >
+                            <div className="w-36 h-36 rounded-full overflow-hidden border-2 border-transparent group-hover:border-[#C50400] transition">
+                              <img
+                                src={m.picture}
+                                alt={m.name}
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                              />
+                            </div>
+                            <p className="mt-4 text-xl font-semibold">{m.name}</p>
+                          </div>
+                        </div>
+                        <div className="absolute inset-0 flex items-center justify-center backface-hidden rotate-y-180 text-white text-lg font-semibold rounded-xl bg-black">
+                          @{m.username}
+                        </div>
                       </div>
-                      <p className="mt-3 text-lg">{m.name}</p>
+                    </div>
+                  ))}
+              </div>
+            )}
+
+            {/* Render the rest of the members */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredMembers
+                .filter((m) => m.name.trim() !== "Kalpana B N")
+                .map((m) => (
+                  <div
+                    key={m.id}
+                    onClick={() => openModal(m)}
+                    className="relative cursor-pointer perspective"
+                  >
+                    <div
+                      className={`transition-transform duration-700 preserve-3d ${flippedMember?.id === m.id ? "rotate-y-180 scale-110" : ""
+                        }`}
+                    >
+                      <div className="backface-hidden">
+                        <div className="group bg-[#111]/40 rounded-xl p-4 flex flex-col items-center 
+                  transition hover:scale-105 hover:shadow-[0_0_20px_rgba(197,4,0,0.6)] md:saturate-0 hover:saturate-100 duration-500"
+                        >
+                          <div className="w-28 h-28 rounded-full overflow-hidden border-2 border-transparent group-hover:border-[#C50400] transition">
+                            <img
+                              src={m.picture}
+                              alt={m.name}
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                            />
+                          </div>
+                          <p className="mt-3 text-lg">{m.name}</p>
+                        </div>
+                      </div>
+                      <div className="absolute inset-0 flex items-center justify-center backface-hidden rotate-y-180 text-white text-lg font-semibold rounded-xl bg-black">
+                        @{m.username}
+                      </div>
                     </div>
                   </div>
-                  <div className="absolute inset-0 flex items-center justify-center backface-hidden rotate-y-180 text-white text-lg font-semibold rounded-xl bg-black">
-                    @{m.username}
-                  </div>
-                </div>
-              </div>
-            ))}
+                ))}
+            </div>
           </div>
         </main>
+
       </div>
 
       {/* Glitch Effect */}
