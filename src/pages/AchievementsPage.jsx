@@ -18,6 +18,10 @@ const AchievementsPage = () => {
       ),
     []
   );
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
 
   // Calculate statistics from all achievements
   const statistics = useMemo(() => {

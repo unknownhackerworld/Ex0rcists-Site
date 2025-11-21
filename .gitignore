@@ -31,3 +31,5 @@ src/assets/members/
 createUserManually.js
 deno.lock
 ex0rcists-site-firebase-adminsdk-fbsvc-31248a2735.json
+src/updateCategories.js
+createUserManually.cjs
