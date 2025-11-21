@@ -5,6 +5,7 @@ import { database } from "../firebase";
 import "@uiw/react-md-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
 import TagInput from "./TagInput";
+import Swal from "sweetalert2";
 
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dm3b6hwzu/image/upload";
 const UPLOAD_PRESET = "ex0rcists"; 
@@ -104,7 +105,11 @@ const AddWriteups = ({ currentUser }) => {
     const category = selectedCategory.trim();
 
     if (!ctfName || !challengeName || !category || tags.length === 0 || !markdown) {
-      alert("⚠️ Please fill in all fields before submitting.");
+      Swal.fire({
+        icon: "warning",
+        title: "Incomplete form",
+        text: "Please fill in all fields before submitting.",
+      });
       return;
     }
 
@@ -134,7 +139,11 @@ const AddWriteups = ({ currentUser }) => {
         await set(catRef, category.charAt(0).toUpperCase() + category.slice(1));
       }
 
-      alert("✅ Writeup added successfully!");
+      Swal.fire({
+        icon: "success",
+        title: "Writeup added",
+        text: "Your writeup has been published.",
+      });
       refs.ctfName.current.value = "";
       refs.challengeName.current.value = "";
       refs.notes.current.value = "";
@@ -143,7 +152,11 @@ const AddWriteups = ({ currentUser }) => {
       setSelectedCategory("");
     } catch (error) {
       console.error("Error saving writeup:", error);
-      alert("❌ Failed to save writeup.");
+      Swal.fire({
+        icon: "error",
+        title: "Save failed",
+        text: "Failed to save writeup.",
+      });
     }
   };
 

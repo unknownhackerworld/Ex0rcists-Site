@@ -16,6 +16,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { useState, useEffect } from "react"
 import { auth } from "./firebase"
 import Navbar_writeup from './components/Navbar_writeup'
+import Achievements from './pages/Achievements'
+import AchievementsPage from './pages/AchievementsPage'
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null)
@@ -32,7 +34,6 @@ function App() {
     <Router>
       <div className="bg-[#010101] min-h-screen w-full bg-grid bg-fixed scroll-smooth">
         <Routes>
-          {/* Normal site with Navbar */}
           <Route
             path="/"
             element={
@@ -40,13 +41,23 @@ function App() {
                 <Navbar />
                 <section id="home" className="scroll-mt-28"><Home /></section>
                 <section id="about" className="scroll-mt-28"><About /></section>
+                <section id="achievements" className="scroll-mt-28"> <Achievements /></section>
                 <section id="members" className="scroll-mt-28"><Members /></section>
                 <section id="writeups" className="scroll-mt-28"><Writeups /></section>
               </>
             }
           />
+          
+          <Route
+            path="/achievements"
+            element={
+              <>
+                <Navbar />
+                <AchievementsPage />
+              </>
+            }
+          />
 
-          {/* Admin page */}
           <Route
             path="/admin"
             element={
@@ -57,7 +68,6 @@ function App() {
             }
           />
 
-          {/* Add Writeups page */}
           <Route
             path="/add-writeup"
             element={

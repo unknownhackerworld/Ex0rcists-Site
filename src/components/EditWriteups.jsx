@@ -4,6 +4,7 @@ import { ref, onValue, remove, update } from "firebase/database";
 import { database } from "../firebase";
 import "@uiw/react-md-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
+import Swal from "sweetalert2";
 
 const EditWriteups = ({ currentUser }) => {
   const [writeups, setWriteups] = useState([]);
@@ -157,7 +158,11 @@ const EditWriteups = ({ currentUser }) => {
         content: finalContent,
         updatedAt: new Date().toISOString(),
       });
-      alert("✅ Writeup updated successfully!");
+      Swal.fire({
+        icon: "success",
+        title: "Writeup updated",
+        text: "Changes saved successfully.",
+      });
       setEditingId(null);
       setFormData({
         ctfName: "",
@@ -171,24 +176,44 @@ const EditWriteups = ({ currentUser }) => {
       sessionStorage.clear();
     } catch (error) {
       console.error("Error updating writeup:", error);
-      alert("❌ Failed to update writeup.");
+      Swal.fire({
+        icon: "error",
+        title: "Update failed",
+        text: "Failed to update writeup.",
+      });
     }
   };
 
   const handleDelete = async (item) => {
     if (!item) return;
-    if (window.confirm("Are you sure you want to delete this writeup?")) {
-      try {
-        const writeupRef = ref(
-          database,
-          `writeups/${item.ctfName}/${item.category}/${item.challengeName}`
-        );
-        await remove(writeupRef);
-        alert("🗑️ Writeup deleted!");
-      } catch (error) {
-        console.error("Error deleting writeup:", error);
-        alert("❌ Failed to delete writeup.");
-      }
+    const result = await Swal.fire({
+      icon: "warning",
+      title: "Delete writeup?",
+      text: "This action cannot be undone.",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      confirmButtonText: "Delete",
+    });
+    if (!result.isConfirmed) return;
+
+    try {
+      const writeupRef = ref(
+        database,
+        `writeups/${item.ctfName}/${item.category}/${item.challengeName}`
+      );
+      await remove(writeupRef);
+      Swal.fire({
+        icon: "success",
+        title: "Deleted",
+        text: "Writeup removed.",
+      });
+    } catch (error) {
+      console.error("Error deleting writeup:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Delete failed",
+        text: "Failed to delete writeup.",
+      });
     }
   };
 
@@ -201,7 +226,11 @@ const EditWriteups = ({ currentUser }) => {
       await update(writeupRef, { visible: !item.visible });
     } catch (error) {
       console.error("Error updating visibility:", error);
-      alert("❌ Failed to update visibility.");
+      Swal.fire({
+        icon: "error",
+        title: "Visibility update failed",
+        text: "Failed to update visibility.",
+      });
     }
   };
 

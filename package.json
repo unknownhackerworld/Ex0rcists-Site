@@ -14,6 +14,7 @@
     "@tailwindcss/vite": "^4.1.13",
     "@uiw/react-markdown-preview": "^5.1.5",
     "@uiw/react-md-editor": "^4.0.8",
+    "animate.css": "^4.1.1",
     "authenticator": "^1.1.5",
     "axios": "^1.12.1",
     "buffer": "^6.0.3",
@@ -25,6 +26,7 @@
     "react-dom": "^19.1.1",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.9.1",
+    "sweetalert2": "^11.26.3",
     "tailwindcss": "^4.1.13"
   },
   "devDependencies": {

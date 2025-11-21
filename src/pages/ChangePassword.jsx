@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { auth, reauthenticateWithCredential, EmailAuthProvider, updatePassword } from "firebase/auth";
+import Swal from "sweetalert2";
 
 const ChangePassword = () => {
   const [oldPass, setOldPass] = useState("");
@@ -9,7 +10,11 @@ const ChangePassword = () => {
   const handleChangePassword = async (e) => {
     e.preventDefault();
     if (newPass !== confirmPass) {
-      alert("❌ Passwords do not match");
+      Swal.fire({
+        icon: "error",
+        title: "Password mismatch",
+        text: "Passwords do not match.",
+      });
       return;
     }
     try {
@@ -17,10 +22,18 @@ const ChangePassword = () => {
       const cred = EmailAuthProvider.credential(user.email, oldPass);
       await reauthenticateWithCredential(user, cred);
       await updatePassword(user, newPass);
-      alert("✅ Password updated successfully!");
+      Swal.fire({
+        icon: "success",
+        title: "Password updated",
+        text: "Password updated successfully!",
+      });
     } catch (err) {
       console.error(err);
-      alert("❌ Error: " + err.message);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: err.message,
+      });
     }
   };
 

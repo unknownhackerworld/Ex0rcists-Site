@@ -1,29 +1,67 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import logo_dragon from "../assets/logo_dragon.png";
 import logo_name from "../assets/logo_name.png";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
-import { GoogleAuthProvider, GithubAuthProvider, linkWithPopup, onAuthStateChanged } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  GithubAuthProvider,
+  linkWithPopup,
+  onAuthStateChanged,
+} from "firebase/auth";
+import Swal from "sweetalert2";
 
 const Navbar_Admin = ({ username }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [socialOpen, setSocialOpen] = useState(false);
   const [user, setUser] = useState(auth.currentUser);
   const navigate = useNavigate();
+  const dropdownRef = useRef(null);
 
-  onAuthStateChanged(auth, (u) => {
-    setUser(u); 
-  });
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (u) => {
+      setUser(u);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setMenuOpen(false);
+        setSocialOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const linkProvider = async (provider) => {
     try {
-      if (!user) return alert("⚠️ No user logged in!");
+      if (!user) {
+        Swal.fire({
+          icon: "warning",
+          title: "No user",
+          text: "No user logged in!",
+        });
+        return;
+      }
 
       await linkWithPopup(user, provider);
-      alert("✅ Account linked successfully. You can now use this social login.");
+      Swal.fire({
+        icon: "success",
+        title: "Account linked",
+        text: "You can now use this social login.",
+      });
       setSocialOpen(false);
     } catch (error) {
       console.error(error);
-      alert("❌ Linking failed: " + error.message);
+      Swal.fire({
+        icon: "error",
+        title: "Linking failed",
+        text: error.message,
+      });
     }
   };
 
@@ -36,15 +74,21 @@ const Navbar_Admin = ({ username }) => {
             brightness-150 " />
       </div>
 
-      <div className="relative">
+      <div className="relative" ref={dropdownRef}>
         <span
           className="text-bloodred-500 cursor-pointer hover:underline text-xl"
-          onClick={() => setMenuOpen(!menuOpen)}
+          onClick={() =>
+            setMenuOpen((prev) => {
+              const next = !prev;
+              if (!next) setSocialOpen(false);
+              return next;
+            })
+          }
         >
           Hello, {username || "User"}!
         </span>
 
-        {(menuOpen && user) && (
+        {menuOpen && user && (
           <div className="absolute right-0 mt-2 bg-gray-900 border border-gray-700 rounded shadow-lg w-48 z-50">
             <button
               className="block px-4 py-2 hover:bg-gray-700 text-white w-full text-left"
@@ -56,7 +100,7 @@ const Navbar_Admin = ({ username }) => {
             <div className="relative">
               <button
                 className="block px-4 py-2 hover:bg-gray-700 text-white w-full text-left"
-                onClick={() => setSocialOpen(!socialOpen)}
+                onClick={() => setSocialOpen((prev) => !prev)}
               >
                 Set Social Signin ▼
               </button>

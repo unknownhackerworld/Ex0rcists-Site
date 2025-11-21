@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { ref, onValue, set } from "firebase/database";
 import { database } from "../firebase";
 import { FaPencilAlt } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const EditMembers = () => {
   const [membersList, setMembersList] = useState([]);
@@ -123,7 +124,11 @@ const EditMembers = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name) {
-      alert("Please select a member first!");
+      Swal.fire({
+        icon: "warning",
+        title: "No member selected",
+        text: "Please select a member first!",
+      });
       return;
     }
 
@@ -140,10 +145,18 @@ const EditMembers = () => {
         Categories: categories,
         ProfilePic: formData.profilePic,
       });
-      alert("Member updated successfully!");
+      Swal.fire({
+        icon: "success",
+        title: "Member updated",
+        text: "Changes saved successfully.",
+      });
     } catch (error) {
       console.error("Error updating data:", error);
-      alert("Error updating member.");
+      Swal.fire({
+        icon: "error",
+        title: "Update failed",
+        text: "Error updating member.",
+      });
     }
   };
 

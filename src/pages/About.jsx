@@ -38,7 +38,7 @@ const About = () => {
         <div className="flex-1 text-justify text-lg text-gray-200 font-main space-y-6">
           <p>
             We are <span className="text-bloodred-500 font-semibold">Ex0rcists</span>, an academic CTF team incubated by{" "}
-            St. Joseph’s Group of Institutions, India. Since our formation, we have carved a place in the global
+            St. Joseph’s Group of Institutions,Chennai, India. Since our formation, we have carved a place in the global
             cybersecurity community through relentless participation, research, and competition.
           </p>
 
@@ -49,13 +49,6 @@ const About = () => {
               {rankings.year || "N/A"}).
             </strong>
           </p>
-
-          <p>
-            Our journey has taken us through prestigious arenas like Nullcon HackIM, HITCON CTF, DiceCTF, Shakti CTF,
-            CryptoCTF, DownUnderCTF, ACECTF, BCACTF, TJCTF, and VishwaCTF — where we secured strong finishes and
-            consistently proved our resilience.
-          </p>
-
           <p>
             Our identity goes beyond rankings — we are hackers, builders, and defenders united by one mantra:{" "}
             <span className="text-bloodred-500 font-semibold">"THE RITUAL BEGINS AT ROOT ACCESS."</span>

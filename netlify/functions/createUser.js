@@ -13,7 +13,7 @@ if (!admin.apps.length) {
   });
 }
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   try {
     const { email, displayName } = JSON.parse(event.body);
 

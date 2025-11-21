@@ -1,8 +1,8 @@
 import React, { useState, useRef } from "react";
 import { FaPencilAlt } from "react-icons/fa";
 import { ref, set } from "firebase/database";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, database } from "../firebase";
+import { database } from "../firebase";
+import Swal from "sweetalert2";
 
 
 
@@ -92,7 +92,11 @@ const AddMembers = () => {
     e.preventDefault();
 
     if (!formData.name || !formData.email) {
-      alert("Name and Email are required!");
+      Swal.fire({
+        icon: "warning",
+        title: "Missing fields",
+        text: "Name and Email are required!",
+      });
       return;
     }
 
@@ -128,7 +132,11 @@ const AddMembers = () => {
         UID: uid, // ✅ Store UID from backend
       });
 
-      alert("✅ Member added successfully with authentication!");
+      Swal.fire({
+        icon: "success",
+        title: "Member added",
+        text: "Member created with authentication!",
+      });
 
       setFormData({
         name: "",
@@ -143,7 +151,11 @@ const AddMembers = () => {
       setImagePreview(null);
     } catch (error) {
       console.error("Error saving data:", error);
-      alert("❌ Error saving data: " + error.message);
+      Swal.fire({
+        icon: "error",
+        title: "Failed to save data",
+        text: error.message,
+      });
     }
   }
 

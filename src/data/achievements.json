@@ -1,0 +1,185 @@
+[
+  {
+    "title": "LNM Hacks 7.0 CTF v2 2025",
+    "date": "2025-01-24",
+    "prize": "—",
+    "position": 5,
+    "priority": 0,
+    "description": "Team participation in HackACTF 2025, ranked 5th."
+  },
+  {
+    "title": "FACT CTF",
+    "date": "2025-01-29",
+    "prize": "6000",
+    "position": 1,
+    "priority": 1,
+    "description": "Solo winner of FACT CTF at Amrita Vishwa Vidyapeetham, Chennai."
+  },
+  {
+    "title": "TROJANS CyberTrail CTF",
+    "date": "2025-02-05",
+    "prize": "1500",
+    "position": 1,
+    "priority": 1,
+    "description": "Winner of the TROJANS Cyber Trail CTF at Chennai Institute of Technology."
+  },
+  {
+    "title": "V-PRAYUKTI'25 CTF",
+    "date": "2025-02-08",
+    "prize": "500",
+    "position": 1,
+    "priority": 1,
+    "description": "Winner of V-PRAYUKTI '25 CTF at Bannari Amman Institute of Technology."
+  },
+  {
+    "title": "ExploitX CTF by Revil,CIT Chennai",
+    "date": "2025-02-10",
+    "prize": "1500",
+    "priority": 1,
+    "position": 1,
+    "description": "Winner (solo) of ExploitX CTF by Revil at CIT Chennai."
+  },
+  {
+    "title": "CTF Quest Finals",
+    "date": "2025-02-20",
+    "prize": "15,000",
+    "priority": 1,
+    "position": 2,
+    "description": "Runner of CTF Quest Finals by Thiran at Sri Eshwar College of Engineering, Coimbatore."
+  },
+  {
+    "title": "GhostOps CTF",
+    "date": "2025-02-15",
+    "prize": "1500",
+    "priority": 0,
+    "description": "Winner of GhostOps CTF at Jerusalem College of Engineering, Chennai."
+  },
+  {
+    "title": "KICTF CTF",
+    "date": "2025-03-14",
+    "prize": "3000",
+    "priority": 1,
+    "position": 3,
+    "description": "2nd Runner (3rd) of KICTF organised by Team Nova at Kumaraguru College of Technology, Coimbatore."
+  },
+  {
+    "title": "HACKOFF CTF, RMK College of Engineering & Technology, Thiruvallur",
+    "date": "2025-03-17",
+    "prize": "1500",
+    "priority": 0,
+    "position": 1,
+    "description": "Winner of HACKOFF CTF at RMK College of Engineering & Technology, Thiruvallur."
+  },
+  {
+    "title": "HACKP46LU CTF, SRM University",
+    "date": "2025-04-09",
+    "prize": "—",
+    "priority": 0,
+    "position": 1,
+    "description": "Winner of HACKP46LU CTF at SRM University (winner received 3×1-month HTB VIP + 1 yr xyz domain)."
+  },
+  {
+    "title": "Binary Clash 360 IIT Madras & IIITDM Kancheepuram",
+    "date": "2025-05-08",
+    "prize": "250000",
+    "priority": 1,
+    "position": 1,
+    "description": "Winner of Binary Clash 360: Boot | Hack | CTF conducted at IIT Madras / IIITDM Kancheepuram."
+  },
+  {
+    "title": "ExploitX: Into the Void 2025 Finals",
+    "date": "2025-08-01",
+    "prize": "—",
+    "priority": 0,
+    "position": 5,
+    "description": "Top performer at ExploitX: Into the Void 2025, organised by CIT Chennai."
+  },
+  {
+    "title": "SSM CTF Write-up Winner",
+    "date": "2025-07-22",
+    "prize": "2000",
+    "priority": 1,
+    "position": "Writeup Winner",
+    "description": "Winner of SSM CTF Write-up (international) in Singapore."
+  },
+  {
+    "title": "Ragnarok Quest CTF, SRM Valliammai Engineering College",
+    "date": "2025-08-13",
+    "prize": "—",
+    "priority": 0,
+    "position": 1,
+    "description": "Winner of Ragnarok Quest CTF at SRM Valliammai Engineering College."
+  },
+  {
+    "title": "NullCode CTF",
+    "date": "2025-08-02",
+    "prize": "—",
+    "priority": 0,
+    "position": 2,
+    "description": "2nd Place in NullCode CTF at Velammal Engineering College."
+  },
+  {
+    "title": "Arcadia CTF",
+    "date": "2025-08-08",
+    "prize": "—",
+    "priority": 0,
+    "position": 1,
+    "description": "Winner (1st) of Arcadia CTF at SRM Valliammai Engineering College."
+  },
+  {
+    "title": "Indian Army Terrier Cyber Quest 2025 Finalist (Track 1: Bug Hunting)",
+    "date": "2025-10-06",
+    "prize": "—",
+    "priority": 0,
+    "position": "Finalist",
+    "description": "Finalist in Indian Army Terrier Cyber Quest 2025 (Track 1: Bug Hunting). "
+  },
+  {
+    "title": "ACN 4.0 CTF",
+    "date": "2025-09-15",
+    "prize": "12000",
+    "priority": 1,
+    "position": 1,
+    "description": "Winner of ACN 4.0 CTF at Amrita Vishwa Vidyapeetham, Chennai."
+  },
+  {
+    "title": "What's The Flag? CTF",
+    "date": "2025-10-18",
+    "prize": "-",
+    "priority": 0,
+    "position": 1,
+    "description": "Winner of What's The Flag? CTF at Rajalakshmi Engineering College (2×CRTP)."
+  },
+  {
+    "title": "Chaitanya CTF",
+    "date": "2025-11-06",
+    "prize": "—",
+    "priority": 0,
+    "position": 1,
+    "description": "Winner of Chaitanya CTF at Himachal Pradesh Technical University."
+  },
+  {
+    "title": "CyberConverge CTF",
+    "date": "2025-08-28",
+    "prize": "—",
+    "priority": 0,
+    "position": 1,
+    "description": "Winner of CyberConverge CTF conducted by CYSCOM VIT Chennai CTF (2×CRTP, 1×CARTP)."
+  },
+  {
+    "title": "Z3R0D4Y CTF 2025 (solo)",
+    "date": "2025-11-31",
+    "prize": "—",
+    "priority": 0,
+    "position": 1,
+    "description": "Winner of Z3R0D4Y CTF 2025 (solo)."
+  },
+  {
+    "title": "Hack the Upside Down CTF",
+    "date": "2025-09-18",
+    "prize": "—",
+    "priority": 0,
+    "position": 3,
+    "description": "3rd Place in Hack the Upside Down CTF at Sri Sairam Institute of Technology, Chennai."
+  }
+]

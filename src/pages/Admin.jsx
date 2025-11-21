@@ -6,6 +6,10 @@ import EditMembers from "../components/EditMembers";
 import AddWriteups from "../components/AddWriteups";
 import EditWriteups from "../components/EditWriteups";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+
+const TOTP_VERIFICATION_KEY = "totpVerification";
+const TOTP_SESSION_TTL = 10 * 60 * 1000; // 10 minutes
 
 const Admin = () => {
   const [activeTab, setActiveTab] = useState("addMembers");
@@ -17,25 +21,72 @@ const Admin = () => {
   useEffect(() => {
     const unsub = auth.onAuthStateChanged(async (u) => {
       if (!u) {
+        setLoading(false);
         navigate("/login");
         return;
       }
 
-      setUser(u);
+      const rejectAccess = async (message) => {
+        if (message) {
+          Swal.fire({
+            icon: "warning",
+            title: "Access denied",
+            text: message,
+          });
+        }
+        await auth.signOut().catch(() => {});
+        setLoading(false);
+        navigate("/login");
+      };
 
       try {
+        const userRecordRef = ref(database, `users/${u.uid}`);
+        const userRecordSnap = await get(userRecordRef);
+
+        if (!userRecordSnap.exists()) {
+          return rejectAccess("User record missing. Please contact an administrator.");
+        }
+
+        const userRecord = userRecordSnap.val();
+
+        if (userRecord.firstLogin) {
+          return rejectAccess("Complete the initial password change before accessing the admin panel.");
+        }
+
+        const totpInfoRaw = sessionStorage.getItem(TOTP_VERIFICATION_KEY);
+        let totpVerified = false;
+
+        if (totpInfoRaw) {
+          try {
+            const parsed = JSON.parse(totpInfoRaw);
+            totpVerified =
+              parsed.uid === u.uid && Date.now() - parsed.timestamp < TOTP_SESSION_TTL;
+          } catch (err) {
+            console.warn("Invalid TOTP verification token:", err);
+          }
+        }
+
+        if (!totpVerified) {
+          return rejectAccess("Please re-verify your TOTP code.");
+        }
+
+        setUser(u);
+
         const snap = await get(ref(database, `admins`));
         if (snap.exists()) {
           const admins = snap.val();
           const email = u.email;
           const isAdminEmail = Object.values(admins).includes(email);
           setIsAdmin(isAdminEmail);
+        } else {
+          setIsAdmin(false);
         }
-      } catch (error) {
-        console.error("Error fetching admins:", error);
-      }
 
-      setLoading(false);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error validating admin access:", error);
+        rejectAccess("Unable to verify admin access. Please try again.");
+      }
     });
 
     return () => unsub();
